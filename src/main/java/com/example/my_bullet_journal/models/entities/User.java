@@ -3,6 +3,8 @@ package com.example.my_bullet_journal.models.entities;
 
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -12,8 +14,9 @@ public class User extends BaseEntity{
     private String username;
     private String email;
     private String password;
-    private Set<DailyTask> tasks;
-
+    private Set<DailyTask> tasks  = new HashSet<>();
+    private Set<Role> roles;
+    private List<Expense> expenses;
     public User() {
     }
 
@@ -54,6 +57,26 @@ public class User extends BaseEntity{
 
     public User setTasks(Set<DailyTask> tasks) {
         this.tasks = tasks;
+        return this;
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public User setRoles(Set<Role> roles) {
+        this.roles = roles;
+        return this;
+    }
+
+    @OneToMany(mappedBy = "user")
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    public User setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
         return this;
     }
 }

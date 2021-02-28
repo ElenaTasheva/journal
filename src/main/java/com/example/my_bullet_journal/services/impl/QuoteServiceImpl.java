@@ -51,6 +51,6 @@ public class QuoteServiceImpl implements QuoteService {
 
     private Quote random() {
         Random random = new Random();
-        return quotes.get(random.nextInt(quotes.size()));
+        return quotes.get(random.nextInt(quotes.size() -1) + 1);
     }
 }

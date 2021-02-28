@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../static/sticky-notes/css/style.css" />
-    <link rel="stylesheet" href="../static/templated-epilogue/assets/css/main.css" />
-    <link href="../static/templated-epilogue/css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css"> <!-- Font Icon -->
-    <link rel="stylesheet" href="../static/colorlib-regform-7/colorlib-regform-7/fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="/sticky-notes/css/style.css" />
+    <link rel="stylesheet" href="/templated-epilogue/assets/css/main.css" />
+    <link href="/templated-epilogue/css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css"> <!-- Font Icon -->
+    <link rel="stylesheet" href="/colorlib-regform-7/colorlib-regform-7/fonts/material-icon/css/material-design-iconic-font.min.css">
 
 </head>
 <body id="add-image">
@@ -37,29 +37,29 @@
         <h1 id="income-heading">Add Expence</h1>
         <div id="add-expenses">
             <div class="d-flex justify-content-center">
-                <form action="" method="POST"
+                <form action="/expenses/add" method="POST" th:object="${expenseBindingModel}"
                       class="text-light">
                     <div class="form-group">
-                        <label for="formGroupExampleInput"></label>
-                        <input id="name-expense" type="text" class="form-control" id="formGroupExampleInput" placeholder="Expences">
                         <label for="exampleFormControlSelect1"></label>
-                        <select class="form-control" id="exampleFormControlSelect1">
+                        <select name="category" class="form-control" id="exampleFormControlSelect1">
                             <option value="">Select Category</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            <option
+                                    th:each="c: ${categories}"
+                                    th:value="${c}"
+                                    th:text="${c}"
+                                    th:selected="${c} == *{category}"
+                            >
                         </select>
                     </div>
-                    <input name="aomount" id="price" type="number" class="form-control" placeholder="Amount">
-                    <small id="priceError" class="form-text bg-danger rounded">Price must be positive</small>
+                    <label for="price"></label>
+                    <input th:field = "*{amount}" th:errorclass = "bg-danger" name="amount" id="price" type="number" class="form-control" placeholder="Amount">
+                    <small th:if="${#fields.hasErrors('amount')}" th:errors = "*{amount}"> id="priceError" class="form-text bg-danger rounded">Price must be positive</small>
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1"></label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Description"></textarea>
+                        <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Description"></textarea>
                     </div>
 
-                    <button class="btn" value="ADD"><i class="fa fa-edit"></i></button>
+                    <button class="btn" value="ADD" type="submit"><i class="fa fa-edit"></i></button>
                 </form>
             </div>
         </div>
