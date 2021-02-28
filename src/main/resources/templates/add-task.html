@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/sticky-notes/css/style.css" />
+    <link rel="stylesheet" href="/templated-epilogue/assets/css/main.css" />
+    <link href="/templated-epilogue/css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css"> <!-- Font Icon -->
+    <link rel="stylesheet" href="/colorlib-regform-7/colorlib-regform-7/fonts/material-icon/css/material-design-iconic-font.min.css">
+    <script src="/colorlib-regform-7/colorlib-regform-7/js/main.js"></script>
+</head>
+<body id="add-image">
+<th:block th:include="~{fragments/nav}"></th:block>
+<main class="p-5 bg-blur text-center my-main">
+
+    <div id="container">
+        <h1 id="income-heading">Add Task</h1>
+    <div id="add-form">
+    <div class="d-flex justify-content-center">
+        <form action="/tasks/add" method="POST" th:object="${taskBindingModel}"
+              class="text-light">
+                <div class="form-group">
+                    <label id="formGroupExampleInput" for="formGroupExampleInput"></label>
+                    <input id="name-expense" name="name" type="text" class="form-control" placeholder="Task">
+                    <label for="exampleFormControlSelect1"></label>
+                    <select th:field="*{category}" class="form-control" id="exampleFormControlSelect1">
+                        <option value="">Select Category</option>
+                        <option
+                                th:each="c: ${categories}"
+                                th:value="${c}"
+                                th:text="${c}"
+                                th:selected="${c} == *{category}"
+                        >
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1"></label>
+                    <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Description"></textarea>
+                </div>
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="releaseDate">Due date</label>
+                    <input  name="dueOn" id="releaseDate" type="date" class="form-control" placeholder="Release date">
+                    <small  id="releaseDateError" class="form-text bg-danger rounded">Release date cannot be in the
+                        future</small>
+                </div>
+            </div>
+            <button class="btn" value="ADD" type="submit"><i class="fa fa-edit"></i></button>
+        </form>
+    </div>
+    </div>
+    </div>
+</main>
+</body>
+</html>
