@@ -30,14 +30,14 @@ public class ExpenseController {
     public String showAdd(Model model){
         if(!model.containsAttribute("expenseBindingModel")){
             model.addAttribute("expenseBindingModel", new ExpenseBindingModel());
-            model.addAttribute("categories",this.expenseService.getCategories());
         }
+        model.addAttribute("categories",this.expenseService.getCategories());
 
         return "add-expenses";
     }
 
     @PostMapping("/add")
-    public String register(@Valid ExpenseBindingModel expenseBindingModel,
+    public String add(@Valid ExpenseBindingModel expenseBindingModel,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes){
 
@@ -49,8 +49,16 @@ public class ExpenseController {
 
         expenseService.save(this.modelMapper.map(expenseBindingModel, ExpenseServiceModel.class));
 
-        return "redirect:/";
+        return "redirect:all";
 
     }
+
+    @GetMapping("/all")
+    public String showAll(Model model){
+        model.addAttribute("expenses", this.expenseService.getAllExpenses());
+        model.addAttribute("total", this.expenseService.getTotalAmountOfExpenses());
+        return "expenses";
+    }
+
 
 }

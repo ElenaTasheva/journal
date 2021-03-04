@@ -35,6 +35,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                  .passwordParameter("password")
                  .defaultSuccessUrl("/")
                  .failureForwardUrl("/users/login");
+//                 .and()
+//                 .rememberMe()
+//                 .rememberMeParameter("remember-me")
+//                 .key("remember-me Me Encryption Key")
+//                 .rememberMeCookieName("rememberMeCookieName")
+//                 .tokenValiditySeconds(10000);
 
         http.csrf().disable();
 

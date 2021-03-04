@@ -22,7 +22,7 @@ public class DailyTask extends BaseEntity{
     }
 
 
-    @Column(unique = true)
+    @Column()
     public String getName() {
         return name;
     }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/sticky-notes/css/style.css" />
+    <link rel="stylesheet" href="/templated-epilogue/assets/css/main.css" />
+    <link href="/templated-epilogue/css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css"> <!-- Font Icon -->
+    <link rel="stylesheet" href="/colorlib-regform-7/colorlib-regform-7/fonts/material-icon/css/material-design-iconic-font.min.css">
+
+</head>
+<body>
+<th:block th:include="~{fragments/nav}"></th:block>
+
+<div class="card-columns" style="padding: 80px">
+    <div th:each=" t: ${topics}" class="card" style="width: 18rem;" >
+        <a th:href="@{/topics/comments/{id}(id=${t.id})}">view</a>
+        <img th:src="${t.imageUrl}"  class="card-img-top" alt="..." >
+        <div class="card-body">
+            <p th:text="${t.title}" class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
+        </div>
+    </div>
+</div>

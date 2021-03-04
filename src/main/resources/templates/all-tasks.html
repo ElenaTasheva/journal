@@ -19,10 +19,20 @@
         <a href="#">
             <h2 class="sticky-title" th:text="${t.category}">Title #1</h2>
             <p class="sticky-notes" th:text="${t.name}">Text Content #1</p>
-            <p class="sticky-date">due: 22.05.2012</p>
-            <button type="button" class="btn btn-primary btn-sm btn btn-outline-light" id="done">Done</button>
+            <p class="sticky-date" th:text="|due: ${t.dueOn}|">due: 22.05.2012</p>
+            <span>
+            <form th:action= "@{/tasks/delete/{taskId}(taskId=${t.id})}"
+                  th:method="DELETE" class="sticky-form-button">
+            <input  class="btn btn-primary-sm btn btn-outline-light" type="submit" value="Done"></input>
+                </form>
+                <form th:action= "@{/tasks/edit/{taskId}(taskId=${t.id})}"
+                      th:method="GET" class="sticky-form-button">
+                    <input  class="btn btn-primary-sm btn btn-outline-light" type="submit" value="Edit"></input>
+            </form>
+                </span>
 
         </a>
+
     </li>
     </ul>
 </div>

@@ -7,6 +7,7 @@ import java.time.LocalDate;
 public class TaskViewModel {
 
 
+    private Long id;
     private String name;
     private LocalDate dueOn;
     private DailyCategoryEnum category;
@@ -39,6 +40,15 @@ public class TaskViewModel {
 
     public TaskViewModel setCategory(DailyCategoryEnum category) {
         this.category = category;
+        return this;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public TaskViewModel setId(Long id) {
+        this.id = id;
         return this;
     }
 }

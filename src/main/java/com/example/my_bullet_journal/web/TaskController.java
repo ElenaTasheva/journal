@@ -3,15 +3,18 @@ package com.example.my_bullet_journal.web;
 import com.example.my_bullet_journal.models.bindings.TaskBindingModel;
 import com.example.my_bullet_journal.models.services.TaskServiceModel;
 import com.example.my_bullet_journal.services.TaskService;
+import jdk.jshell.execution.Util;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RequestMapping("/tasks")
@@ -28,15 +31,15 @@ public class TaskController {
 
 
     @GetMapping("/all")
-    public String showTasks(Model model){
+    public String showTasks(Model model) {
         model.addAttribute("tasks", taskService.getAllTasks());
         return "all-tasks";
 
     }
 
     @GetMapping("/add")
-    public String showAddTask(Model model){
-        if(!model.containsAttribute("taskBindingModel")){
+    public String showAddTask(Model model) {
+        if (!model.containsAttribute("taskBindingModel")) {
             model.addAttribute("taskBindingModel", new TaskBindingModel());
         }
         model.addAttribute("categories", taskService.getAllCategories());
@@ -47,13 +50,56 @@ public class TaskController {
     @PostMapping("/add")
     public String addTask(@Valid TaskBindingModel taskBindingModel,
                           BindingResult bindingResult,
-                          RedirectAttributes redirectAttributes){
-        if(bindingResult.hasErrors()){
-
+                          RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("taskBindingModel", taskBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.taskBindingModel", bindingResult);
+            return "redirect:add";
         }
+
         this.taskService.save(this.modelMapper.map(taskBindingModel, TaskServiceModel.class));
 
-        return "redirect:add";
+        return "redirect:all";
 
     }
-}
+
+
+    @DeleteMapping("/delete/{taskId}")
+    public String delete(@PathVariable long taskId) {
+        taskService.delete(taskId);
+        return "redirect:/tasks/all";
+    }
+
+
+
+    @PostMapping("/edit/{taskId}")
+    public String editAction(@PathVariable long taskId,
+                                   @Valid TaskBindingModel taskBindingModel,
+                                   BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("taskBindingModel", taskBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.taskBindingModel", bindingResult);
+            return "redirect:" + taskBindingModel.getId();
+        }
+
+        this.taskService.update(taskId, taskBindingModel);
+        return "redirect:/tasks/all";
+    }
+
+
+    @GetMapping("/edit/{taskId}")
+    public String showEdit(Model model,@PathVariable long taskId){
+        if(!model.containsAttribute("taskBindingModel")){
+            model.addAttribute("taskBindingModel", new TaskBindingModel());
+            model.addAttribute("taskBindingModel", this.taskService.findById(taskId));
+        }
+        model.addAttribute("categories", taskService.getAllCategories());
+        return "edit-task";
+
+    }
+
+    }
+
+

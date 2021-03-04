@@ -80,6 +80,13 @@ body {
 
 }
 
+.center-div {
+    margin: auto;
+    position: fixed;
+    left: 40%;
+    bottom: 0;
+}
+
 #add {
     position: relative;
     left: 20px;
@@ -131,17 +138,116 @@ body {
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-#add-expenses{
-    background-color: #8fd19e;
+#add-income {
+    padding: 2rem 4rem;
+    display: inline-block;
+    border: 3px solid #333333;
+    font-size: 2.5rem;
+    border-radius: 2% 6% 5% 4% / 1% 1% 2% 4%;
+    text-transform: uppercase;
+    letter-spacing: 0.3ch;
+    background: #f7de75;
+    position: relative;
+&::before {
+     content: '';
+     border: 2px solid #353535;
+     display: block;
+     width: 100%;
+     height: 100%;
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate3d(-50%, -50%, 0) scale(1.015) rotate(0.5deg);
+     border-radius: 1% 1% 2% 4% / 2% 6% 5% 4%;
+ }
 }
+
+#add-expenses{
+
+    padding: 2rem 4rem;
+    display: inline-block;
+    border: 3px solid #333333;
+    font-size: 2.5rem;
+    border-radius: 2% 6% 5% 4% / 1% 1% 2% 4%;
+    text-transform: uppercase;
+    letter-spacing: 0.3ch;
+    background: #8fd19e;
+    position: relative;
+
+&::before {
+     content: '';
+     border: 2px solid #353535;
+     display: block;
+     width: 100%;
+     height: 100%;
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate3d(-50%, -50%, 0) scale(1.015) rotate(0.5deg);
+     border-radius: 1% 1% 2% 4% / 2% 6% 5% 4%;
+ }
+}
+
 
 #add{
     background-color: whitesmoke;
+}
+
+#add-expence-btn {
+    padding: 15px 32px;
+    margin: 20px 20px;
+
 }
 #done{
     background-color: whitesmoke;
 }
 
-#th-par{
+#th-par {
     font-family: "Century Schoolbook";
+}
+
+#table-primary{
+    font-family: 'Titillium Web', sans-serif;
+    font-max-size: large;
+}
+
+#income-row{
+    background-color: #f7de75;
+}
+
+#wrap-donuts {
+    display: flex;
+    overflow: auto;
+    padding: 80px;
+}
+#donutchart {
+    float: left;
+    display: inline-block;
+
+}
+#donutchart2 {
+    float: left;
+    display: inline-block;
+}
+
+#comments-p {
+    font-family: "Courier New", monospace;
+    font-size: medium;
+}
+
+#form-lebel {
+    width:500px;
+    display: inline-block;
+}
+
+#heading-comments {
+    text-align: center;
+    color: #934c50;
+    font-size: 13px;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.sticky-form-button {
+    margin: 0 0 1rem 0;
+    display: inline-flex;
 }

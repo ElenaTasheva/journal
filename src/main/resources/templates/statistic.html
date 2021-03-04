@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/templated-epilogue/assets/css/main.css" />
+    <link href="/templated-epilogue/css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css"> <!-- Font Icon -->
+    <link rel="stylesheet" href="/colorlib-regform-7/colorlib-regform-7/fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="/sticky-notes/css/style.css" />
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="/colorlib-regform-7/colorlib-regform-7/css/style.css">
+    <title>Statistic</title>
+</head>
+
+<body>
+<th:block th:include="~{fragments/nav}"></th:block>
+
+<div id="wrap-donuts">
+<div id="donutchart" style="width: 700px; height: 500px; float:left; margin: 10px"></div>
+    <div id="donutchart3" style="width: 700px; height: 500px; margin: 10px">
+    </div>
+    <div id="donutchart2" style="width: 700px; height: 500px; float:left; margin: 10px"></div>
+</div>
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    // First chart - expenses
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        let rent = [[${budgetServiceModel['RENT']}]];
+        let drinks = [[${budgetServiceModel['DRINKS']}]];
+        let loan = [[${budgetServiceModel['LOAN']}]];
+        let groceries = [[${budgetServiceModel['GROCERIES']}]];
+        let health = [[${budgetServiceModel['HEALTH']}]];
+        let other = [[${budgetServiceModel['OTHER']}]];
+        let mortgage = [[${budgetServiceModel['MORTGAGE']}]];
+        let presents = [[${budgetServiceModel['PRESENTS']}]];
+        let transport = [[${budgetServiceModel['TRANSPORT']}]];
+        let toiletries = [[${budgetServiceModel['TOILETRIES']}]];
+        let entertainment = [[${budgetServiceModel['ENTERTAINMENT']}]];
+        let clothes = [[${budgetServiceModel['CLOTHES']}]];
+        let bills = [[${budgetServiceModel['BILLS']}]];
+        let empty = [[${budgetServiceModel['NO DATA']}]];
+
+
+        var data = google.visualization.arrayToDataTable([
+            ['Task', 'Hours per Day'],
+            ['Rent', rent],
+            ['Drinks', drinks],
+            ['Loan', loan],
+            ['Groceries', groceries],
+            ['Health', health],
+            ['Other', other],
+            ['Mortgage', mortgage],
+            ['Presents', presents],
+            ['Transport', transport],
+            ['Toiletries', toiletries],
+            ['Entertainment', entertainment],
+            ['Clothes', clothes],
+            ['Bills', bills],
+            ['No data', empty]
+        ]);
+
+        var options = {
+            title: 'My Expenses',
+            pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+
+    }
+
+    // secondChart - income
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(drawChart2);
+        function drawChart2() {
+            let salary = [[${incomeCategories['SALARY']}]];
+            let deposit = [[${incomeCategories['DEPOSIT']}]];
+            let investment = [[${incomeCategories['INVESTMENT']}]];
+            let other = [[${incomeCategories['OTHER']}]];
+            let empty = [[${incomeCategories['NO DATA']}]];
+
+            var data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+                ['Salary', salary],
+                ['Deposit', deposit],
+                ['Investment', investment],
+                ['Other', other],
+                ['No Data', empty]
+            ]);
+
+            var options = {
+                title: 'My Income',
+                pieHole: 0.4,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('donutchart2'));
+            chart.draw(data, options);
+        }
+
+    google.charts.load("current", {packages:["corechart"]});
+    google.charts.setOnLoadCallback(drawChart3);
+    function drawChart3() {
+        let income = [[${income}]];
+        let expense = [[${expense}]];
+
+        var data = google.visualization.arrayToDataTable([
+            ['Task', 'Hours per Day'],
+            ['Income', income],
+            ['Expenses', expense]
+
+        ]);
+
+        var options = {
+            title: 'My Balance: ' +  [[${balance}]],
+            pieHole: 0.4
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart3'));
+        chart.draw(data, options);
+    }
+</script>
+
+
+</body>
+</html>

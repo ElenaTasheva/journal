@@ -1,5 +1,6 @@
 package com.example.my_bullet_journal.services.impl;
 
+import com.example.my_bullet_journal.models.bindings.TaskBindingModel;
 import com.example.my_bullet_journal.models.entities.DailyTask;
 import com.example.my_bullet_journal.models.enums.DailyCategoryEnum;
 import com.example.my_bullet_journal.models.services.TaskServiceModel;
@@ -8,6 +9,7 @@ import com.example.my_bullet_journal.repositories.TaskRepository;
 import com.example.my_bullet_journal.services.TaskService;
 import com.example.my_bullet_journal.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -47,5 +49,26 @@ public class TaskServiceImpl implements TaskService {
                  TaskViewModel view =  this.modelMapper.map(task, TaskViewModel.class);
                  return view;
                 }).collect(Collectors.toList());
+    }
+
+    @Override
+    public void delete(Long id) {
+        //todo don`t remove it but change status to completed
+        this.taskRepository.deleteById(id);
+    }
+
+    @Override
+    public TaskBindingModel findById(long taskId) {
+        //todo deal with the optional
+        return this.modelMapper.map(this.taskRepository.findById(taskId).get(), TaskBindingModel.class);
+    }
+
+    @Override
+    public void update(Long id, TaskBindingModel taskBindingModel) {
+        DailyTask task = this.taskRepository.findById(id).orElse(null);
+        taskBindingModel.setId(id);
+        task = this.modelMapper.map(taskBindingModel, DailyTask.class);
+        this.taskRepository.save(task);
+
     }
 }

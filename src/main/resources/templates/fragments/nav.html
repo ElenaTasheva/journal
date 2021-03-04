@@ -6,16 +6,17 @@
                 <li class="nav-item active"> <a class="nav-link" href="/tasks/all">Daily Tasks <span class="sr-only">(current)</span></a> </li>
                 <li class="nav-item"> <a class="nav-link" href="#">Monthly Goals</a> </li>
                 <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Finance </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown1"> <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown1"> <a class="dropdown-item" href="/expenses/all">Expenses</a> <a class="dropdown-item" href="/income/all">Income</a>
+                        <a class="dropdown-item" href="/statistic">Balance</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Something else here</a> </div>
                 </li>
                 <li class="nav-item"> <a class="nav-link disabled" href="#">My Travel Plans</a> </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <button id="login" type="button" class="btn btn-light" onclick="logIn()">Login In</button>
+                <a href="/users/login" id="login" type="submit" class="btn btn-light">Login In</a>
                 &nbsp;&nbsp;&nbsp;
-                <button id="register" type="button" class="btn btn-light" onclick="signUp()">Sign Up</button>        </form>
+                <a href="/users/register" id="register" type="submit" class="btn btn-light">Sign up</a>       </form>
         </div>
     </nav>
 

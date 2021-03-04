@@ -46,5 +46,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         //todo fix the role setting
+        //todo throw exception if the user already exist
     }
 }

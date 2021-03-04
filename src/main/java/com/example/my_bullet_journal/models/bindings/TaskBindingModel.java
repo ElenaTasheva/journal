@@ -10,6 +10,7 @@ import java.time.LocalDate;
 
 public class TaskBindingModel {
 
+    private Long id;
     private String name;
     private String description;
     private LocalDate dueOn;
@@ -56,6 +57,15 @@ public class TaskBindingModel {
 
     public TaskBindingModel setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public TaskBindingModel setId(Long id) {
+        this.id = id;
         return this;
     }
 }

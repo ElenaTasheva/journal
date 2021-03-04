@@ -1,5 +1,6 @@
 package com.example.my_bullet_journal.services;
 
+import com.example.my_bullet_journal.models.bindings.TaskBindingModel;
 import com.example.my_bullet_journal.models.enums.DailyCategoryEnum;
 import com.example.my_bullet_journal.models.services.TaskServiceModel;
 import com.example.my_bullet_journal.models.view.TaskViewModel;
@@ -13,4 +14,9 @@ public interface TaskService {
 
     List<TaskViewModel> getAllTasks();
 
+    void delete(Long id);
+
+    TaskBindingModel findById(long taskId);
+
+    void update(Long id, TaskBindingModel taskBindingModel);
 }

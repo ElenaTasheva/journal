@@ -1,73 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>My Journal</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="../static/sticky-notes/css/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../static/templated-epilogue/assets/css/main.css" />
-    <link href="../static/templated-epilogue/css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css"> <!-- Font Icon -->
-    <link rel="stylesheet" href="../static/colorlib-regform-7/colorlib-regform-7/fonts/material-icon/css/material-design-iconic-font.min.css">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/sticky-notes/css/style.css" />
+    <link rel="stylesheet" href="/templated-epilogue/assets/css/main.css" />
+    <link href="/templated-epilogue/css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css"> <!-- Font Icon -->
+    <link rel="stylesheet" href="/colorlib-regform-7/colorlib-regform-7/fonts/material-icon/css/material-design-iconic-font.min.css">
+
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light"> <a class="navbar-brand" href="#">Home</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent1" aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent1">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active"> <a class="nav-link" href="#">Daily Tasks <span class="sr-only">(current)</span></a> </li>
-            <li class="nav-item"> <a class="nav-link" href="#">Monthly Goals</a> </li>
-            <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Finance </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown1"> <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a> </div>
-            </li>
-            <li class="nav-item"> <a class="nav-link disabled" href="#">My Travel Plans</a> </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login In</button>
-            &nbsp;&nbsp;&nbsp;
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign Up</button>
-        </form>
-    </div>
-</nav>
-<div id="container">
+<th:block th:include="~{fragments/nav}"></th:block><div id="container">
     <button class="btn"><i class="fa fa-plus"></i></button>
     <h1 id="income-heading">My Income</h1>
 <table class="table" id="table-income">
     <thead>
     <tr class="table-primary">
         <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Type</th>
+        <th scope="col">Category</th>
+        <th scope="col">Description</th>
         <th scope="col">Amount</th>
     </tr>
     </thead>
     <tbody>
-    <tr class="table-warning">
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-    </tr>
-    <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-    </tr>
-    <tr>
-        <th scope="row">3</th>
-        <td>Larry</td>
-        <td>the Bird</td>
-        <td>@twitter</td>
+    <tr th:each="i : ${income}" id="income-row">
+        <th th:text="${i.id}" scope="row" >2</th>
+        <td th:text="${i.category}">Jacob</td>
+        <td th:text="${i.description}">Thornton</td>
+        <td th:text="${i.amount}">@fat</td>
     </tr>
     </tbody>
 </table>
     <div id="hr">
     <hr id="total">
-        <h3>Total Income: </h3>
+        <h3 th:text="|Total Income: ${total}|"> </h3>
 </div>
 </div>
 
