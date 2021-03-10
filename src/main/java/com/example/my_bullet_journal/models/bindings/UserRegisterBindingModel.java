@@ -1,9 +1,17 @@
 package com.example.my_bullet_journal.models.bindings;
 
+import com.example.my_bullet_journal.models.validators.FieldMatch;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+
+
+@FieldMatch(
+        first = "password",
+        second = "confirmedPassword"
+)
 public class UserRegisterBindingModel {
 
     private String username;

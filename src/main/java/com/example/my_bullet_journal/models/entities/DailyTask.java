@@ -2,9 +2,10 @@ package com.example.my_bullet_journal.models.entities;
 
 import com.example.my_bullet_journal.models.enums.DailyCategoryEnum;
 import com.example.my_bullet_journal.models.enums.StatusEnum;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -15,7 +16,7 @@ public class DailyTask extends BaseEntity{
     private LocalDate dueOn;
     private DailyCategoryEnum category;
     private String description;
-    private StatusEnum status = StatusEnum.INPROGRESS;
+    private StatusEnum status;
     private User user;
 
     public DailyTask() {
@@ -33,6 +34,7 @@ public class DailyTask extends BaseEntity{
     }
 
     @Column(name = "due_on")
+    @NotNull
     public LocalDate getDueOn() {
         return dueOn;
     }
@@ -43,6 +45,7 @@ public class DailyTask extends BaseEntity{
     }
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     public DailyCategoryEnum getCategory() {
         return category;
     }
@@ -53,6 +56,7 @@ public class DailyTask extends BaseEntity{
     }
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     public StatusEnum getStatus() {
         return status;
     }
@@ -80,5 +84,10 @@ public class DailyTask extends BaseEntity{
     public DailyTask setDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    @PrePersist
+    public void setStatus(){
+        setStatus(StatusEnum.INPROGRESS);
     }
 }

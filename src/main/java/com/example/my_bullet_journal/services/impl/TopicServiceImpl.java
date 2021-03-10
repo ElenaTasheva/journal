@@ -1,5 +1,6 @@
 package com.example.my_bullet_journal.services.impl;
 
+import com.example.my_bullet_journal.models.bindings.TopicBindingModel;
 import com.example.my_bullet_journal.models.entities.Topic;
 import com.example.my_bullet_journal.models.services.TopicServiceModel;
 import com.example.my_bullet_journal.models.view.TopicViewModel;
@@ -37,7 +38,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Topic findByName(String name) {
-        return this.topicRepository.findByTitle(name);
+        return this.topicRepository.findByTitle(name).orElseThrow(IllegalArgumentException::new);
     }
 
     @Override
@@ -64,6 +65,17 @@ public class TopicServiceImpl implements TopicService {
             topicRepository.save(topic);
             topicRepository.save(topic1);
 
+        }
+    }
+
+    @Override
+    public void save(TopicBindingModel topicBindingmodel) {
+        if(this.topicRepository.findByTitle(topicBindingmodel.getTitle()).isPresent()){
+            throw new IllegalArgumentException("Topic already exist");
+            //todo Make a custom Exception
+        }
+        else{
+            this.topicRepository.save(this.modelMapper.map(topicBindingmodel, Topic.class));
         }
     }
 }

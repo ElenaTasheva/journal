@@ -1,18 +1,23 @@
 package com.example.my_bullet_journal.web;
 
+import com.example.my_bullet_journal.models.bindings.UserLoginBindingModel;
 import com.example.my_bullet_journal.models.bindings.UserRegisterBindingModel;
 import com.example.my_bullet_journal.models.services.UserRegisterServiceModel;
 import com.example.my_bullet_journal.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @RequestMapping("/users")
 @Controller
@@ -29,35 +34,61 @@ public class UserController {
 
     @GetMapping("/login")
     public String showLogin(){
-
         return "login";
 
     }
+
+      @ModelAttribute("registrationBindingModel")
+       public UserRegisterBindingModel createBindingModel() {
+         return new UserRegisterBindingModel();
+      }
+
+  @PostMapping("/login-error")
+    public ModelAndView failedLogin(@ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
+        String username) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.addObject("bad_credentials", true);
+        modelAndView.addObject("email", username);
+
+        modelAndView.setViewName("/login");
+
+        return modelAndView;
+        //todo why login and register are not visable
+    }
+
+
 
     @PostMapping("/register")
     public String register(@Valid UserRegisterBindingModel userRegisterBindingModel,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes){
 
-        if(bindingResult.hasErrors() || !userRegisterBindingModel.getConfirmedPassword().equals(userRegisterBindingModel.getConfirmedPassword())) {
+        if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", bindingResult);
-            if (!userRegisterBindingModel.getConfirmedPassword().equals(userRegisterBindingModel.getConfirmedPassword())) {
-                redirectAttributes.addAttribute("not matching", true);
-            }
+            redirectAttributes.addFlashAttribute("userExistsError", false);
             return "redirect:register";
         }
-        else{
-            this.userService.register(this.modelMapper.map(userRegisterBindingModel, UserRegisterServiceModel.class));
-            return "redirect:login";
+
+         try {
+             userService.registerAndLogin(this.modelMapper.map(userRegisterBindingModel, UserRegisterServiceModel.class));
+         } catch (IllegalArgumentException ex) {
+          redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
+          redirectAttributes.addFlashAttribute("userExistsError", true);
+          return "redirect:register";
+         }
+           
+             return "redirect:/";
         }
 
-    }
+
 
     @GetMapping("/register")
     public String showRegister(Model model){
         if(!model.containsAttribute("userRegisterBindingModel")){
             model.addAttribute("userRegisterBindingModel", new UserRegisterBindingModel());
+            model.addAttribute("userExistsError", false);
         }
 
         return "register";

@@ -18,7 +18,7 @@
         <h1 id="income-heading">Add Expense</h1>
         <div id="add-expenses">
             <div class="d-flex justify-content-center">
-                <form action="/expenses/add" method="POST" th:object="${expenseBindingModel}"
+                <form th:action="@{/expenses/add}" method="POST" th:object="${expenseBindingModel}"
                       class="text-light">
                     <div class="form-group">
                         <label for="exampleFormControlSelect1"></label>

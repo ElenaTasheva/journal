@@ -8,5 +8,7 @@ public interface UserService {
     User getUserByUsername(String name);
 
     //todo return object
-    void register(UserRegisterServiceModel map);
+    void registerAndLogin(UserRegisterServiceModel userRegisterServiceModel);
+
+    void seedAdmin();
 }

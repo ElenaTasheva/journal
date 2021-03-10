@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -31,7 +32,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role findByRow(RoleEnum roleEnum) {
+    public Optional<Role> findByRow(RoleEnum roleEnum) {
         return this.roleRepository.findByRoleEnum(roleEnum);
     }
 }

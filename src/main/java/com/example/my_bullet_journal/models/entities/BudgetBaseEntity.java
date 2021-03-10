@@ -1,5 +1,6 @@
 package com.example.my_bullet_journal.models.entities;
 
+import com.example.my_bullet_journal.models.enums.BudgetStatusEnum;
 import com.example.my_bullet_journal.models.enums.ExpenseEnum;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ public abstract class BudgetBaseEntity  extends BaseEntity{
     private LocalDate addedOn;
     private BigDecimal amount;
     private User user;
+    private BudgetStatusEnum status;
 
     public BudgetBaseEntity() {
     }
@@ -31,6 +33,7 @@ public abstract class BudgetBaseEntity  extends BaseEntity{
     }
 
     @Column
+    @NotNull
     public LocalDate getAddedOn() {
         return addedOn;
     }
@@ -61,8 +64,20 @@ public abstract class BudgetBaseEntity  extends BaseEntity{
         return this;
     }
 
+
+
+    public BudgetStatusEnum getStatus() {
+        return status;
+    }
+
+    public BudgetBaseEntity setStatus(BudgetStatusEnum status) {
+        this.status = status;
+        return this;
+    }
+
     @PrePersist
     public void prePersist(){
         setAddedOn(LocalDate.now());
+        setStatus(BudgetStatusEnum.ACTIVE);
     }
 }

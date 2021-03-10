@@ -12,7 +12,9 @@
 </head>
 <body>
 <th:block th:include="~{fragments/nav}"></th:block><div id="container">
+    <form th:action="@{/income/add}">
     <button class="btn"><i class="fa fa-plus"></i></button>
+    </form>
     <h1 id="income-heading">My Income</h1>
 <table class="table" id="table-income">
     <thead>

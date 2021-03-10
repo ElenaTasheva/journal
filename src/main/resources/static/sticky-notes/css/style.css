@@ -76,7 +76,8 @@ body {
 }
 
 .main-div {
-    position: absolute;
+    position: relative;
+    margin-top: 50px;
 
 }
 
@@ -245,9 +246,29 @@ body {
     color: #934c50;
     font-size: 13px;
     font-family: 'Source Sans Pro', sans-serif;
+    margin-top: 80px;
 }
 
 .sticky-form-button {
     margin: 0 0 1rem 0;
     display: inline-flex;
+}
+
+#balance-empty {
+    font-size: 1.75rem;
+    margin-top: 100px;
+    padding-left: 250px;
+    color: #db545a;
+}
+
+.add-expense-empty-balance{
+    margin: 0 0 8rem 0;
+    display: inline-flex;
+    margin-left: 242px;
+}
+
+#wrapper-admin{
+    border-radius: 25px;
+    border: 2px solid #2cccc4;
+
 }

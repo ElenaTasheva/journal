@@ -1,5 +1,6 @@
 package com.example.my_bullet_journal.services;
 
+import com.example.my_bullet_journal.models.bindings.TopicBindingModel;
 import com.example.my_bullet_journal.models.entities.Topic;
 import com.example.my_bullet_journal.models.services.TopicServiceModel;
 import com.example.my_bullet_journal.models.view.TopicViewModel;
@@ -21,4 +22,6 @@ public interface TopicService {
 
 
     void seedTopics();
+
+    void save(TopicBindingModel topicBindingmodel);
 }

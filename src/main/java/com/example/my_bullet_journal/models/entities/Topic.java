@@ -12,9 +12,10 @@ import java.util.List;
 public class Topic extends BaseEntity{
 
     private String title;
+    private String imageUrl;
     private LocalDate addedOn;
     private List<Comment> comments;
-    private String imageUrl;
+
 
     public Topic() {
     }

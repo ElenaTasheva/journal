@@ -3,6 +3,7 @@ package com.example.my_bullet_journal.services.impl;
 import com.example.my_bullet_journal.models.bindings.TaskBindingModel;
 import com.example.my_bullet_journal.models.entities.DailyTask;
 import com.example.my_bullet_journal.models.enums.DailyCategoryEnum;
+import com.example.my_bullet_journal.models.enums.StatusEnum;
 import com.example.my_bullet_journal.models.services.TaskServiceModel;
 import com.example.my_bullet_journal.models.view.TaskViewModel;
 import com.example.my_bullet_journal.repositories.TaskRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +46,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskViewModel> getAllTasks() {
-        return this.taskRepository.findAll()
+        return this.taskRepository.findAllByStatus(StatusEnum.INPROGRESS)
                 .stream().map(task -> {
                  TaskViewModel view =  this.modelMapper.map(task, TaskViewModel.class);
                  return view;
@@ -54,7 +56,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void delete(Long id) {
         //todo don`t remove it but change status to completed
-        this.taskRepository.deleteById(id);
+        Optional<DailyTask> task = taskRepository.findById(id);
+        if(task.isPresent()){
+            task.get().setStatus(StatusEnum.COMPLETED);
+            this.taskRepository.save(task.get());
+        }
     }
 
     @Override

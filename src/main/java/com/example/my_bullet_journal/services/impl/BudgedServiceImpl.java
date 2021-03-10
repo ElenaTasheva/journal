@@ -35,6 +35,7 @@ public class BudgedServiceImpl implements BudgetService {
         return budgetServiceModel.getExpensesCategory();
     }
 
+    // if there is no data in income or expenses
     private void checkIfAllEmpty(HashMap<String, BigDecimal> map) {
         if(map.size() == 0){
             map.put("NO DATA", BigDecimal.valueOf(100));
@@ -66,7 +67,13 @@ public class BudgedServiceImpl implements BudgetService {
 
     @Override
     public BigDecimal getBalance() {
-        return this.budgetServiceModel.getSumIncome().subtract(this.budgetServiceModel.getSumExpenses());
+        // invoking subtract when the income and expenses is null or there is no data yet
+        try{
+            return this.budgetServiceModel.getSumIncome().subtract(this.budgetServiceModel.getSumExpenses());
+        }
+        catch (NullPointerException ex){
+            return BigDecimal.valueOf(0);
+        }
     }
 
     private void setAllCategoriesIncome() {

@@ -14,25 +14,30 @@
 <th:block th:include="~{fragments/nav}"></th:block>
 <body>
 
-<div class="mb-3" style="padding-top: 80px; width: 50%; padding-left: 80px" >
-    <form th:href="@{/topics/comments/{id}(id=${topic.id})}" method="POST">
-        <label id="form-lebel" for="exampleFormControlTextarea1" class="form-label">
-    <textarea name="text" type="text" class="form-control" id="exampleFormControlTextarea1" placeholder="Add Comment...">
-    </textarea>
-    <button class="btn btn-light-sm" type="submit">Add</button>
-    </label>
-    </form>
-</div>
 <div>
     <h1 th:text="${topic.title}" id="heading-comments"></h1>
 </div>
+
+<div class="mb-3" style="padding-top: 20px; width: 40%; margin-left: 400px; height: 40%; position: relative" >
+    <form th:action="@{/topics/comments/{id}(id=${topic.id})}" method="POST">
+    <textarea name="text" type="text" class="form-control" id="exampleFormControlTextarea1" placeholder="Add Comment...">
+    </textarea>
+
+            <button class="btn btn-light btn-sm" type="submit"
+                    style="margin-left: 250px;margin-top: 5px;">Add</button>
+    </form>
+</div>
+
 <div class="row" style="padding: 20px">
-    <div class="col-sm-6" th:each="c: ${comments}">
+    <div class="col-sm-6" th:each="c: ${comments}"
+         style="padding-bottom: 10px;
+                padding-left: 40px;
+                padding-right: 40px;">
         <div class="card">
-            <div class="card-body border-success  mb-3">
+            <div style="border-color: #259bca; background-color: whitesmoke" >
                 <h5 class="card-title" th:text="${c.username}">Special title treatment</h5>
                 <p class="card-text-success" th:text="${c.text}">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-secondary">Delete</a>
+                <a href="#" class="btn btn-secondary" style="background-color: #8db8e0; margin-left: 200px;">Delete</a>
             </div>
         </div>
     </div>

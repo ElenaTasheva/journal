@@ -2,8 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/templated-epilogue/assets/css/main.css" />
     <link href="/templated-epilogue/css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css"> <!-- Font Icon -->
     <link rel="stylesheet" href="/colorlib-regform-7/colorlib-regform-7/fonts/material-icon/css/material-design-iconic-font.min.css">
@@ -17,9 +19,22 @@
 <body>
 <th:block th:include="~{fragments/nav}"></th:block>
 
+<div th:if="${emptyBalance}">
+<h3 id="balance-empty" >Please add data. The balance is empty</h3>
+    <span>
+            <form th:action= "@{/expenses/add}"
+                 class="add-expense-empty-balance">
+            <input  class="btn btn-primary-sm btn btn-outline-light" type="submit" value="Add Expense"></input>
+                </form>
+                <form th:action= "@{/income/add}"
+                      class="add-expense-empty-balance">
+                    <input  class="btn btn-primary-sm btn btn-outline-light" type="submit" value="Add Income"></input>
+            </form>
+                </span>
+</div>
 <div id="wrap-donuts">
 <div id="donutchart" style="width: 700px; height: 500px; float:left; margin: 10px"></div>
-    <div id="donutchart3" style="width: 700px; height: 500px; margin: 10px">
+    <div  id="donutchart3" style="width: 700px; height: 500px; margin: 10px">
     </div>
     <div id="donutchart2" style="width: 700px; height: 500px; float:left; margin: 10px"></div>
 </div>
@@ -85,6 +100,8 @@
             let other = [[${incomeCategories['OTHER']}]];
             let empty = [[${incomeCategories['NO DATA']}]];
 
+            // if there is no data just set it to 100 by default
+
             var data = google.visualization.arrayToDataTable([
                 ['Task', 'Hours per Day'],
                 ['Salary', salary],
@@ -112,7 +129,8 @@
         var data = google.visualization.arrayToDataTable([
             ['Task', 'Hours per Day'],
             ['Income', income],
-            ['Expenses', expense]
+            ['Expenses', expense],
+
 
         ]);
 
@@ -125,6 +143,14 @@
         chart.draw(data, options);
     }
 </script>
+ <!-- scripts -->
+<script src="/templated-epilogue/js/jquery-3.4.1.min.js"></script>
+<script src="/templated-epilogue/assets/js/skel.min.js"></script>
+<script src="/templated-epilogue/assets/js/util.js"></script>
+<script src="/templated-epilogue/assets/js/main.js"></script>
+<script src="/templated-epilogue/js/popper.min.js"></script>
+<script src="/templated-epilogue/js/bootstrap-4.4.1.js"></script>
+
 
 
 </body>

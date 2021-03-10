@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -28,13 +29,19 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
          http.
                  authorizeRequests().
                  antMatchers("/colorlib-regform-7/**", "/files/**", "/sticky-notes/**", "/templated-epilogue/**").permitAll()
-                 .antMatchers("/", "/users/login", "/users/register", "/expenses/add").permitAll()
+                 .antMatchers("/", "/users/login", "/users/register").permitAll()
                  .antMatchers("/**").authenticated()
                  .and().formLogin().loginPage("/users/login")
-                 .usernameParameter("username")
-                 .passwordParameter("password")
+                 .usernameParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
+                 .passwordParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_PASSWORD_KEY)
                  .defaultSuccessUrl("/")
-                 .failureForwardUrl("/users/login");
+                 .failureForwardUrl("/users/login-error")
+                 .and()
+                 .logout()
+                 .logoutUrl("/logout").
+                        logoutSuccessUrl("/").
+                        invalidateHttpSession(true).
+                        deleteCookies("JSESSIONID");
 //                 .and()
 //                 .rememberMe()
 //                 .rememberMeParameter("remember-me")
@@ -42,7 +49,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                 .rememberMeCookieName("rememberMeCookieName")
 //                 .tokenValiditySeconds(10000);
 
-        http.csrf().disable();
+        // http.csrf().disable();
 
          //todo change the failureLink
     }

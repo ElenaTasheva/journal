@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/sticky-notes/css/style.css" />
+    <link rel="stylesheet" href="/templated-epilogue/assets/css/main.css" />
+    <link href="/templated-epilogue/css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css"> <!-- Font Icon -->
+    <link rel="stylesheet" href="/colorlib-regform-7/colorlib-regform-7/fonts/material-icon/css/material-design-iconic-font.min.css">
+
+</head>
+<body>
+<th:block th:include="~{fragments/nav}"></th:block>
+<div class="main">
+    <section class="sign-in">
+        <div class="container" style="width:200%; margin:80px">
+            <div style="display:inline-block; width:50%;text-align:center;">
+                <h5 style="display: flex">New Quote</h5>
+            <form th:method="POST" th:action="@{quotes/add}" th:object="${quoteBindingModel}" style="width: 50%; margin-top: 25px">
+                <input th:field = "*{author}" th:errorclass = "bg-warning" type="text" class="form-control"  placeholder="Author Name" style="border-color: lightpink">
+                <small th:if="${#fields.hasErrors('author')}" th:errors = "*{author}"></small>
+                <br>
+                <textarea th:field = "*{text}"  th:errorclass = "bg-warning" placeholder="Quote text" class="form-control"  >
+                    <small th:if="${#fields.hasErrors('text')}" th:errors = "*{text}"></small>
+                    <h5 th:if="${success}" th:text="Successfully added quote"></h5>
+                </textarea>
+                <button  type="submit"  class="btn btn-primary btn-sm btn btn-outline-light" style="background-color: beige">Add Quote</button>
+            </form>
+            </div>
+            <div style="display:inline-block; width:45%;text-align:center;">
+                <h5 style="display: flex">New Topic</h5>
+                <form th:method="POST" th:action="@{topics/add}" th:object="${topicBindingModel}"
+                      style="width: 50%; margin-top: 25px">
+                    <input th:field = "${topicBindingModel.imageUrl}" th:errorclass = "bg-warning" type="text" class="form-control" placeholder="Picture url" style="border-color: lightpink">
+                    <small th:if="${#fields.hasErrors('imageUrl')}" th:errors = "${topicBindingModel.imageUrl}"></small>
+                    <br>
+                    <textarea th:field = "${topicBindingModel.title}"  th:errorclass = "bg-warning" placeholder="Topic header" class="form-control"  >
+                        <small th:if="${#fields.hasErrors('title')}" th:errors = "${topicBindingModel.title}"></small>
+
+                </textarea>
+                    <button  type="submit"  class="btn btn-primary btn-sm btn btn-outline-light" style="background-color: beige">Add Topic</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

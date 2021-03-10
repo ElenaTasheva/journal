@@ -19,11 +19,11 @@
         <h1 id="income-heading">Add Income</h1>
         <div id="add-income">
             <div class="d-flex justify-content-center">
-                <form action="/income/add" method="POST" th:object="${incomeBindingModel}"
+                <form th:action="@{/income/add}" method="POST" th:object="${incomeBindingModel}"
                       class="text-light">
                     <div class="form-group">
                         <label for="exampleFormControlSelect1"></label>
-                        <select name="category" class="form-select" id="exampleFormControlSelect1">
+                        <select name="category" class="form-control" id="exampleFormControlSelect1">
                             <option value="">Select Category</option>
                             <option
                                     th:each="c: ${categories}"

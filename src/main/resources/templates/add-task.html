@@ -18,7 +18,7 @@
         <h1 id="income-heading">Add Task</h1>
     <div id="add-form">
     <div class="d-flex justify-content-center">
-        <form action="/tasks/add" method="POST" th:object="${taskBindingModel}"
+        <form th:action="@{/tasks/add}" method="POST" th:object="${taskBindingModel}"
               class="text-light">
                 <div class="form-group">
                     <label id="formGroupExampleInput" for="formGroupExampleInput"></label>

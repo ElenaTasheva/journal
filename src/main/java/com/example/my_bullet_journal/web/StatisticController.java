@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.math.BigDecimal;
+
 @Controller
 public class StatisticController {
 
@@ -23,6 +25,10 @@ public class StatisticController {
         model.addAttribute("income", this.budgetService.getIncomeSum());
         model.addAttribute("expense", this.budgetService.getExpensesSum());
         model.addAttribute("balance", this.budgetService.getBalance());
+        model.addAttribute("emptyBalance", false);
+        if(budgetService.getBalance().equals(BigDecimal.valueOf(0))){
+            model.addAttribute("emptyBalance", true);
+        }
 
 
         return "statistic";

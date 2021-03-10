@@ -1,6 +1,7 @@
 package com.example.my_bullet_journal.services.impl;
 
 
+import com.example.my_bullet_journal.models.bindings.QuoteBingingModel;
 import com.example.my_bullet_journal.models.entities.Quote;
 import com.example.my_bullet_journal.models.view.QuoteViewModel;
 import com.example.my_bullet_journal.repositories.QuoteRepository;
@@ -49,8 +50,17 @@ public class QuoteServiceImpl implements QuoteService {
         return this.modelMapper.map(quote, QuoteViewModel.class);
     }
 
+    @Override
+    public void add(QuoteBingingModel quoteBindingModel) {
+        if(quoteBindingModel.getAuthor().trim().isEmpty()){
+            quoteBindingModel.setAuthor("Anonymous");
+        }
+        quoteRepository.save(this.modelMapper.map(quoteBindingModel, Quote.class));
+    }
+
     private Quote random() {
         Random random = new Random();
+        // todo fix the random not to return a negative number
         return quotes.get(random.nextInt(quotes.size() -1) + 1);
     }
 }
