@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<th:block th:include="~{fragments/head}"></th:block>
-
+<th:block th:include="~{fragments/head-forms}"></th:block>
 <body>
 <th:block th:include="~{fragments/nav}"></th:block>
-<div class="main">
+<div class="main" style="padding-left: 60px; padding-top: 70px;">
     <section class="sign-in">
-        <div class="container" style="width:200%; margin:80px">
             <div style="display:inline-block; width:50%;text-align:center;">
                 <h5 style="display: flex">New Quote</h5>
             <form th:method="POST" th:action="@{quotes/add}" th:object="${quoteBindingModel}" style="width: 50%; margin-top: 25px">
@@ -23,9 +21,8 @@
             <div style="display:inline-block; width:45%;text-align:center;">
                 <h5 style="display: flex">New Topic</h5>
                 <form th:method="POST" th:action="@{topics/add}" th:object="${topicBindingModel}"
-                      style="width: 50%; margin-top: 25px">
-                    <input type="file" class="form-control-file" id="exampleFormControlFile1">
-                    <small th:if="${#fields.hasErrors('imageUrl')}" th:errors = "${topicBindingModel.imageUrl}"></small>
+                      enctype="multipart/form-data" style="width: 50%; margin-top: 25px">
+                        <input type="file" class="form-control-file" id="add-title-image" name="img" required="required">
                     <br>
                     <textarea th:field = "${topicBindingModel.title}"  th:errorclass = "bg-warning" placeholder="Topic header" class="form-control"  >
                         <small th:if="${#fields.hasErrors('title')}" th:errors = "${topicBindingModel.title}"></small>
@@ -34,7 +31,6 @@
                     <button  type="submit"  class="btn btn-primary btn-sm btn btn-outline-light" style="background-color: beige">Add Topic</button>
                 </form>
             </div>
-        </div>
     </section>
 </div>
 

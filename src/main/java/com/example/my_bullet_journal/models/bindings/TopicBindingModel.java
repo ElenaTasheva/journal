@@ -20,7 +20,7 @@ public class TopicBindingModel {
         return this;
     }
 
-    @NotNull
+
     public MultipartFile getImg() {
         return img;
     }

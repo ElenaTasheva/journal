@@ -25,12 +25,10 @@ import java.io.IOException;
 public class TopicController {
 
     private final TopicService topicService;
-    private final CommentService commentService;
     private final ModelMapper modelMapper;
 
-    public TopicController(TopicService topicService, CommentService commentService, ModelMapper modelMapper) {
+    public TopicController(TopicService topicService, ModelMapper modelMapper) {
         this.topicService = topicService;
-        this.commentService = commentService;
         this.modelMapper = modelMapper;
     }
 

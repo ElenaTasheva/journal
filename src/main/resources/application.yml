@@ -18,14 +18,20 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
-
   servlet:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
       enabled: true
 
-# cloudinary:
-#    cloud-name: dxwfwbxq2
-#    api-key: 475892765127179
-#    api-secret:
+cloudinary:
+ api-key: 475892765127179
+ api-secret:
+ cloud-name: dxwfwbxq2
+
+#  servlet:
+#    multipart:
+#      max-file-size: 5MB
+#      max-request-size: 5MB
+#      enabled: true
+
