@@ -33,7 +33,7 @@
                 <h5 style="display: flex">New Topic</h5>
                 <form th:method="POST" th:action="@{topics/add}" th:object="${topicBindingModel}"
                       style="width: 50%; margin-top: 25px">
-                    <input th:field = "${topicBindingModel.imageUrl}" th:errorclass = "bg-warning" type="text" class="form-control" placeholder="Picture url" style="border-color: lightpink">
+                    <input type="file" class="form-control-file" id="exampleFormControlFile1">
                     <small th:if="${#fields.hasErrors('imageUrl')}" th:errors = "${topicBindingModel.imageUrl}"></small>
                     <br>
                     <textarea th:field = "${topicBindingModel.title}"  th:errorclass = "bg-warning" placeholder="Topic header" class="form-control"  >

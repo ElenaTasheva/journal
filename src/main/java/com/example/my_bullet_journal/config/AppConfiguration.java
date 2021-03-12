@@ -20,4 +20,6 @@ public class AppConfiguration  {
     public PasswordEncoder create() {
         return new BCryptPasswordEncoder();
     }
+
+
 }

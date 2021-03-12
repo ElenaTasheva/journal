@@ -5,10 +5,13 @@ import com.example.my_bullet_journal.models.entities.Topic;
 import com.example.my_bullet_journal.models.services.TopicServiceModel;
 import com.example.my_bullet_journal.models.view.TopicViewModel;
 import com.example.my_bullet_journal.repositories.TopicRepository;
+import com.example.my_bullet_journal.services.CloudinaryService;
 import com.example.my_bullet_journal.services.TopicService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 import java.util.stream.Collectors;
@@ -19,10 +22,13 @@ public class TopicServiceImpl implements TopicService {
 
     private final ModelMapper modelMapper;
     private final TopicRepository topicRepository;
+    private final CloudinaryService cloudinaryService;
 
-    public TopicServiceImpl(ModelMapper modelMapper, TopicRepository topicRepository) {
+
+    public TopicServiceImpl(ModelMapper modelMapper, TopicRepository topicRepository, CloudinaryService cloudinaryService) {
         this.modelMapper = modelMapper;
         this.topicRepository = topicRepository;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Override
@@ -56,7 +62,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public void seedTopics() {
-        // todo change it to 0;
+        // todo change it to 0; save the pictures in the project
         if(topicRepository.count() <= 1) {
             Topic topic = new Topic("What are the recent accomplishments that make me feel proud and successful?",
                     "https://stunningmotivation.com/wp-content/uploads/2018/07/motivational-question-1.jpg");
@@ -69,13 +75,17 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void save(TopicBindingModel topicBindingmodel) {
+    public void save(TopicBindingModel topicBindingmodel) throws IOException {
         if(this.topicRepository.findByTitle(topicBindingmodel.getTitle()).isPresent()){
             throw new IllegalArgumentException("Topic already exist");
             //todo Make a custom Exception
         }
         else{
-            this.topicRepository.save(this.modelMapper.map(topicBindingmodel, Topic.class));
+            MultipartFile img = topicBindingmodel.getImg();
+            String imageUrl = cloudinaryService.uploadImage(img);
+            Topic topic = this.modelMapper.map(topicBindingmodel, Topic.class);
+            topic.setImageUrl(imageUrl);
+            this.topicRepository.save(topic);
         }
     }
 }

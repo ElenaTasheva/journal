@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/topics")
@@ -43,7 +44,7 @@ public class TopicController {
     @PostMapping("/add")
     public String addTopic(@Valid TopicBindingModel topicBindingModel,
                            BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes){
+                           RedirectAttributes redirectAttributes) throws IOException {
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("topicBindingModel", topicBindingModel);
@@ -51,7 +52,7 @@ public class TopicController {
             return "redirect:/admin";
         }
 
-        topicService.save(topicBindingModel);
+              topicService.save(topicBindingModel);
 
         return "redirect:all";
 

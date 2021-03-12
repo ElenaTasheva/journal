@@ -1,12 +1,14 @@
 package com.example.my_bullet_journal.models.bindings;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.NotNull;
 
 public class TopicBindingModel {
 
     private String title;
-    private String imageUrl;
+    private MultipartFile img;
 
     @NotBlank(message = "Please enter title")
     public String getTitle() {
@@ -18,14 +20,13 @@ public class TopicBindingModel {
         return this;
     }
 
-    @Pattern(regexp = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]",
-    message = "Please enter a valid URL")
-    public String getImageUrl() {
-        return imageUrl;
+    @NotNull
+    public MultipartFile getImg() {
+        return img;
     }
 
-    public TopicBindingModel setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public TopicBindingModel setImg(MultipartFile img) {
+        this.img = img;
         return this;
     }
 
