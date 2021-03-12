@@ -7,6 +7,7 @@ import com.example.my_bullet_journal.models.enums.StatusEnum;
 import java.time.LocalDate;
 
 public class TaskServiceModel {
+    private Long id;
     private String name;
     private LocalDate dueOn;
     private DailyCategoryEnum category;
@@ -16,6 +17,15 @@ public class TaskServiceModel {
 
 
     public TaskServiceModel() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public TaskServiceModel setId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public String getName() {

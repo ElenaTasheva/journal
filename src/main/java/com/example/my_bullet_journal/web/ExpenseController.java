@@ -4,6 +4,7 @@ import com.example.my_bullet_journal.models.bindings.ExpenseBindingModel;
 import com.example.my_bullet_journal.models.services.ExpenseServiceModel;
 import com.example.my_bullet_journal.services.ExpenseService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,7 @@ public class ExpenseController {
     }
 
     @GetMapping("/add")
+    @PreAuthorize("isAuthenticated()")
     public String showAdd(Model model){
         if(!model.containsAttribute("expenseBindingModel")){
             model.addAttribute("expenseBindingModel", new ExpenseBindingModel());
@@ -37,6 +39,7 @@ public class ExpenseController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("isAuthenticated()")
     public String add(@Valid ExpenseBindingModel expenseBindingModel,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes){
@@ -54,6 +57,7 @@ public class ExpenseController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("isAuthenticated()")
     public String showAll(Model model){
         model.addAttribute("expenses", this.expenseService.getAllExpenses());
         model.addAttribute("total", this.expenseService.getTotalAmountOfExpenses());

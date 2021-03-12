@@ -7,6 +7,7 @@ import jdk.jshell.execution.Util;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,7 @@ public class TaskController {
 
 
     @GetMapping("/all")
+    @PreAuthorize("isAuthenticated()")
     public String showTasks(Model model) {
         model.addAttribute("tasks", taskService.getAllTasks());
         return "all-tasks";
@@ -38,6 +40,7 @@ public class TaskController {
     }
 
     @GetMapping("/add")
+    @PreAuthorize("isAuthenticated()")
     public String showAddTask(Model model) {
         if (!model.containsAttribute("taskBindingModel")) {
             model.addAttribute("taskBindingModel", new TaskBindingModel());
@@ -48,6 +51,7 @@ public class TaskController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("isAuthenticated()")
     public String addTask(@Valid TaskBindingModel taskBindingModel,
                           BindingResult bindingResult,
                           RedirectAttributes redirectAttributes) {
@@ -65,6 +69,7 @@ public class TaskController {
 
 
     @DeleteMapping("/delete/{taskId}")
+    @PreAuthorize("isAuthenticated()")
     public String delete(@PathVariable long taskId) {
         taskService.delete(taskId);
         return "redirect:/tasks/all";
@@ -73,6 +78,7 @@ public class TaskController {
 
 
     @PostMapping("/edit/{taskId}")
+    @PreAuthorize("isAuthenticated()")
     public String editAction(@PathVariable long taskId,
                                    @Valid TaskBindingModel taskBindingModel,
                                    BindingResult bindingResult, RedirectAttributes redirectAttributes) {
@@ -84,12 +90,13 @@ public class TaskController {
             return "redirect:" + taskBindingModel.getId();
         }
 
-        this.taskService.update(taskId, taskBindingModel);
+        this.taskService.update(taskId, this.modelMapper.map(taskBindingModel, TaskServiceModel.class));
         return "redirect:/tasks/all";
     }
 
 
     @GetMapping("/edit/{taskId}")
+    @PreAuthorize("isAuthenticated()")
     public String showEdit(Model model,@PathVariable long taskId){
         if(!model.containsAttribute("taskBindingModel")){
             model.addAttribute("taskBindingModel", new TaskBindingModel());

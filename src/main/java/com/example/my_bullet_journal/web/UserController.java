@@ -1,10 +1,10 @@
 package com.example.my_bullet_journal.web;
 
-import com.example.my_bullet_journal.models.bindings.UserLoginBindingModel;
 import com.example.my_bullet_journal.models.bindings.UserRegisterBindingModel;
 import com.example.my_bullet_journal.models.services.UserRegisterServiceModel;
 import com.example.my_bullet_journal.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 @RequestMapping("/users")
 @Controller
@@ -33,6 +32,7 @@ public class UserController {
 
 
     @GetMapping("/login")
+    @PreAuthorize("isAnonymous()")
     public String showLogin(){
         return "login";
 
@@ -44,6 +44,7 @@ public class UserController {
       }
 
   @PostMapping("/login-error")
+  @PreAuthorize("isAnonymous()")
     public ModelAndView failedLogin(@ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
         String username) {
         ModelAndView modelAndView = new ModelAndView();
@@ -60,6 +61,7 @@ public class UserController {
 
 
     @PostMapping("/register")
+    @PreAuthorize("isAnonymous()")
     public String register(@Valid UserRegisterBindingModel userRegisterBindingModel,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes){
@@ -79,12 +81,13 @@ public class UserController {
           return "redirect:register";
          }
            
-             return "redirect:/";
+             return "redirect:/home";
         }
 
 
 
     @GetMapping("/register")
+    @PreAuthorize("isAnonymous()")
     public String showRegister(Model model){
         if(!model.containsAttribute("userRegisterBindingModel")){
             model.addAttribute("userRegisterBindingModel", new UserRegisterBindingModel());

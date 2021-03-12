@@ -1,20 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/templated-epilogue/assets/css/main.css" />
-    <link href="/templated-epilogue/css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css"> <!-- Font Icon -->
-    <link rel="stylesheet" href="/colorlib-regform-7/colorlib-regform-7/fonts/material-icon/css/material-design-iconic-font.min.css">
-    <link rel="stylesheet" href="/sticky-notes/css/style.css" />
-
-    <!-- Main css -->
-    <link rel="stylesheet" href="/colorlib-regform-7/colorlib-regform-7/css/style.css">
-    <title>Statistic</title>
-</head>
+<th:block th:include="~{fragments/head-forms}"></th:block>
 
 <body>
 <th:block th:include="~{fragments/nav}"></th:block>
@@ -144,14 +130,9 @@
     }
 </script>
  <!-- scripts -->
-<script src="/templated-epilogue/js/jquery-3.4.1.min.js"></script>
-<script src="/templated-epilogue/assets/js/skel.min.js"></script>
-<script src="/templated-epilogue/assets/js/util.js"></script>
-<script src="/templated-epilogue/assets/js/main.js"></script>
-<script src="/templated-epilogue/js/popper.min.js"></script>
-<script src="/templated-epilogue/js/bootstrap-4.4.1.js"></script>
 
 
+<th:block th:include="~{fragments/footer}"></th:block>
 
 </body>
 </html>

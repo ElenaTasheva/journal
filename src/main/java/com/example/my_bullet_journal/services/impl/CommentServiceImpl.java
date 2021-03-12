@@ -53,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
         Topic topic = this.topicService.findByid(id);
         Comment comment = this.modelMapper.map(commentBindingModel, Comment.class);
         comment.setTopic(topic);
-        comment.setUser(userService.getUserByUsername("admin"));
+        comment.setUser(userService.getUserByUsername("pesho123"));
         this.commentRepository.save(comment);
         //todo setUser
 

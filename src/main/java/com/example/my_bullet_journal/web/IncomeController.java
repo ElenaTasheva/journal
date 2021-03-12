@@ -5,6 +5,7 @@ import com.example.my_bullet_journal.models.bindings.IncomeBindingModel;
 import com.example.my_bullet_journal.models.services.IncomeServiceModel;
 import com.example.my_bullet_journal.services.IncomeService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +31,7 @@ public class IncomeController {
 
 
     @GetMapping("/add")
+    @PreAuthorize("isAuthenticated()")
     public String showIncome(Model model){
         if(!model.containsAttribute("incomeBindingModel")){
             model.addAttribute("incomeBindingModel", new IncomeBindingModel());
@@ -40,6 +42,7 @@ public class IncomeController {
 
 
     @PostMapping("/add")
+    @PreAuthorize("isAuthenticated()")
     public String add(@Valid IncomeBindingModel incomeBindingModel,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes){
@@ -57,6 +60,7 @@ public class IncomeController {
     }
 
     @GetMapping("/all")
+    @PreAuthorize("isAuthenticated()")
     public String showAll(Model model){
         model.addAttribute("income", this.incomeService.getAllIncome());
         model.addAttribute("total", this.incomeService.getTotalIncome());

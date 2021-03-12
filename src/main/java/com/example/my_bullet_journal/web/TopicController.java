@@ -7,6 +7,7 @@ import com.example.my_bullet_journal.models.services.ExpenseServiceModel;
 import com.example.my_bullet_journal.services.CommentService;
 import com.example.my_bullet_journal.services.TopicService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +36,7 @@ public class TopicController {
 
 
     @GetMapping("/all")
+    @PreAuthorize("isAuthenticated()")
     public String showAll(Model model){
 
         model.addAttribute("topics", topicService.getAllTopics());
@@ -42,6 +44,7 @@ public class TopicController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String addTopic(@Valid TopicBindingModel topicBindingModel,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) throws IOException {
@@ -60,19 +63,7 @@ public class TopicController {
 
 
 
-    @GetMapping("/comments/{id}")
-    public String showComments (@PathVariable Long id, Model model){
-        model.addAttribute("comments", this.commentService.viewComments(id));
-        model.addAttribute("topic", this.topicService.getTopicById(id));
-        return "show-comments";
 
-    }
-
-    @PostMapping("/comments/{id}")
-    public String addComment(@PathVariable Long id, CommentBindingModel commentBindingModel) {
-        this.commentService.addCommentToToppic(id, commentBindingModel);
-        return "redirect:" +  id;
-    }
 
 
 }

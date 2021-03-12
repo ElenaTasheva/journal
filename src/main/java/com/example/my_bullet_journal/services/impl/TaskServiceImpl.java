@@ -10,7 +10,6 @@ import com.example.my_bullet_journal.repositories.TaskRepository;
 import com.example.my_bullet_journal.services.TaskService;
 import com.example.my_bullet_journal.services.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -39,13 +38,15 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void save(TaskServiceModel taskServiceModel) {
         DailyTask dailyTask = this.modelMapper.map(taskServiceModel, DailyTask.class);
-        dailyTask.setUser(this.userService.getUserByUsername("admin"));
+        //todo fix the user
+        dailyTask.setUser(this.userService.getUserByUsername("pesho123"));
         taskRepository.save(dailyTask);
 
     }
 
     @Override
     public List<TaskViewModel> getAllTasks() {
+        //todo show allwith the userid = current user
         return this.taskRepository.findAllByStatus(StatusEnum.INPROGRESS)
                 .stream().map(task -> {
                  TaskViewModel view =  this.modelMapper.map(task, TaskViewModel.class);
@@ -64,16 +65,18 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskBindingModel findById(long taskId) {
+    public TaskServiceModel findById(long taskId) {
         //todo deal with the optional
-        return this.modelMapper.map(this.taskRepository.findById(taskId).get(), TaskBindingModel.class);
+        return this.modelMapper.map(this.taskRepository.findById(taskId).get(), TaskServiceModel.class);
     }
 
     @Override
-    public void update(Long id, TaskBindingModel taskBindingModel) {
+    public void update(Long id, TaskServiceModel taskServiceModel) {
         DailyTask task = this.taskRepository.findById(id).orElse(null);
-        taskBindingModel.setId(id);
-        task = this.modelMapper.map(taskBindingModel, DailyTask.class);
+        taskServiceModel.setId(id);
+        task = this.modelMapper.map(taskServiceModel, DailyTask.class);
+        //todo fix the user
+        task.setUser(this.userService.getUserByUsername("pesho123"));
         this.taskRepository.save(task);
 
     }

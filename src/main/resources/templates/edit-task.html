@@ -1,15 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/sticky-notes/css/style.css" />
-    <link rel="stylesheet" href="/templated-epilogue/assets/css/main.css" />
-    <link href="/templated-epilogue/css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css"> <!-- Font Icon -->
-    <link rel="stylesheet" href="/colorlib-regform-7/colorlib-regform-7/fonts/material-icon/css/material-design-iconic-font.min.css">
-    <script src="/colorlib-regform-7/colorlib-regform-7/js/main.js"></script>
-</head>
+<th:block th:include="~{fragments/head-forms}"></th:block>
+
 <body id="add-image">
 <th:block th:include="~{fragments/nav}"></th:block>
 <main class="p-5 bg-blur text-center my-main">
@@ -18,23 +10,24 @@
         <h1 id="income-heading">Edit Task</h1>
         <div id="add-form">
             <div class="d-flex justify-content-center">
-                <form th:action= "@{/tasks/edit/{taskId}(taskId=${taskBindingModel.id})}" method="POST" th:object="${taskBindingModel}"
+                <form th:action= "@{/tasks/edit/{taskId}(taskId=${model.id})}" method="POST" >
+
                       class="text-light">
                     <div class="form-group">
                         <label id="formGroupExampleInput" for="formGroupExampleInput"></label>
-                        <input th:field = "*{name}" th:errorclass = "bg-danger" id="name-expense" name="name" type="text" class="form-control" placeholder="Task">
-                        <small th:if="${#fields.hasErrors('name')}" th:errors = "*{name}"></small>
+                        <input th:field = "${model.name}" th:errorclass = "bg-danger" id="name-expense" name="name" type="text" class="form-control" placeholder="Task">
+                        <small th:if="${#fields.hasErrors('name')}" th:errors = "*{model.name}"></small>
                         <label for="exampleFormControlSelect1"></label>
-                        <select th:field="*{category}" th:errorclass = "bg-danger" class="form-control" id="exampleFormControlSelect1">
+                        <select th:field="${model.category}" th:errorclass = "bg-danger" class="form-control" id="exampleFormControlSelect1">
                             <option value="">Select Category</option>
                             <option
                                     th:each="c: ${categories}"
                                     th:value="${c}"
                                     th:text="${c}"
-                                    th:selected="${c} == *{category}"
+                                    th:selected="${c} == ${model.category}"
                             >
                         </select>
-                        <small th:if="${#fields.hasErrors('category')}" th:errors = "*{category}" class = "text-danger"></small>
+                        <small th:if="${#fields.hasErrors('category')}" th:errors = "${model.category}" class = "text-danger"></small>
                     </div>
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1"></label>
@@ -43,8 +36,8 @@
                     <div class="form-group">
                         <div class="form-group">
                             <label for="releaseDate">Due date</label>
-                            <input th:field="*{dueOn}" th:errorclass = "bg-danger"  name="dueOn" id="releaseDate" type="date" class="form-control" placeholder="Release date">
-                            <small th:if="${#fields.hasErrors('dueOn')}" th:errors = "*{dueOn}" id="releaseDateError" class="form-text bg-danger rounded">Release date cannot be in the
+                            <input th:field="${model.dueOn}" th:errorclass = "bg-danger"  name="dueOn" id="releaseDate" type="date" class="form-control" placeholder="Release date">
+                            <small th:if="${#fields.hasErrors('dueOn')}" th:errors = "${model.dueOn}" id="releaseDateError" class="form-text bg-danger rounded">Release date cannot be in the
                                 future</small>
                         </div>
                     </div>
@@ -53,16 +46,8 @@
             </div>
         </div>
     </div>
-    <footer id="footer">
-        <ul class="icons">
-            <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-            <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-            <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-            <li><a href="#" class="icon fa-linkedin"><span class="label">LinkedIn</span></a></li>
-            <li><a href="#" class="icon fa-envelope"><span class="label">Email</span></a></li>
-        </ul>
+    <th:block th:include="~{fragments/footer}"></th:block>
 
-    </footer>
 
 </main>
 </body>

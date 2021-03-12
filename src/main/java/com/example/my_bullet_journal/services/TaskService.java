@@ -16,7 +16,7 @@ public interface TaskService {
 
     void delete(Long id);
 
-    TaskBindingModel findById(long taskId);
+    TaskServiceModel findById(long taskId);
 
-    void update(Long id, TaskBindingModel taskBindingModel);
+    void update(Long id, TaskServiceModel taskServiceModel);
 }

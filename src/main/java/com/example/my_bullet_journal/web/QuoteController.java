@@ -2,6 +2,7 @@ package com.example.my_bullet_journal.web;
 
 import com.example.my_bullet_journal.models.bindings.QuoteBingingModel;
 import com.example.my_bullet_journal.services.QuoteService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ public class QuoteController {
 
 
     @PostMapping("/quotes/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String addQuote(@Valid QuoteBingingModel quoteBindingModel,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes){

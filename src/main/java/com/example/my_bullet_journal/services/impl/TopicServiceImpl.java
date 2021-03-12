@@ -22,13 +22,13 @@ public class TopicServiceImpl implements TopicService {
 
     private final ModelMapper modelMapper;
     private final TopicRepository topicRepository;
-    private final CloudinaryService cloudinaryService;
+   // private final CloudinaryService cloudinaryService;
 
 
-    public TopicServiceImpl(ModelMapper modelMapper, TopicRepository topicRepository, CloudinaryService cloudinaryService) {
+    public TopicServiceImpl(ModelMapper modelMapper, TopicRepository topicRepository) {
         this.modelMapper = modelMapper;
         this.topicRepository = topicRepository;
-        this.cloudinaryService = cloudinaryService;
+       // this.cloudinaryService = cloudinaryService;
     }
 
     @Override
@@ -81,10 +81,9 @@ public class TopicServiceImpl implements TopicService {
             //todo Make a custom Exception
         }
         else{
-            MultipartFile img = topicBindingmodel.getImg();
-            String imageUrl = cloudinaryService.uploadImage(img);
+//            MultipartFile img = topicBindingmodel.getImg();
+//            String imageUrl = cloudinaryService.uploadImage(img);
             Topic topic = this.modelMapper.map(topicBindingmodel, Topic.class);
-            topic.setImageUrl(imageUrl);
             this.topicRepository.save(topic);
         }
     }
