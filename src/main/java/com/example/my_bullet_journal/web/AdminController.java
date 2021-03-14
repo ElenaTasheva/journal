@@ -9,11 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class AdminController {
 
 
-    @GetMapping("/admin")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/admin")
     public String showAdmin(Model model){
 
         if(!model.containsAttribute("topicBindingModel")){

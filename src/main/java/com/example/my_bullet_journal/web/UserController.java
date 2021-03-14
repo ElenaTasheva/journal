@@ -44,17 +44,16 @@ public class UserController {
 
   @PostMapping("/login-error")
   @PreAuthorize("isAnonymous()")
-    public ModelAndView failedLogin(@ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
-        String username) {
-        ModelAndView modelAndView = new ModelAndView();
+    public String failedLogin(@ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
+        String username, RedirectAttributes attributes) {
 
-        modelAndView.addObject("bad_credentials", true);
-        modelAndView.addObject("email", username);
 
-        modelAndView.setViewName("/login");
+        attributes.addFlashAttribute("bad_credentials", true);
+        attributes.addFlashAttribute("email", username);
 
-        return modelAndView;
-        //todo why login and register are not visable
+
+        return "redirect:/users/login";
+
     }
 
 

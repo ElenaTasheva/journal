@@ -2,8 +2,7 @@ package com.example.my_bullet_journal.models.services;
 
 import com.example.my_bullet_journal.models.enums.ExpenseEnum;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+
 
 public class ExpenseServiceModel extends BaseBudgetServiceModel {
 

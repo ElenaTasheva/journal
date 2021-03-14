@@ -272,3 +272,9 @@ body {
     border: 2px solid #2cccc4;
 
 }
+#task-empty {
+    font-size: 1.75rem;
+    margin-top: 100px;
+    color: #db545a;
+    text-align: center;
+}

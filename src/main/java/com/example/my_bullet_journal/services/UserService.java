@@ -11,4 +11,6 @@ public interface UserService {
     void registerAndLogin(UserRegisterServiceModel userRegisterServiceModel);
 
     void seedAdmin();
+
+    User findByEmail(String currentUserEmail);
 }

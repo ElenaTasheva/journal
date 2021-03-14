@@ -14,9 +14,11 @@ public interface TaskService {
 
     List<TaskViewModel> getAllTasks();
 
-    void delete(Long id);
+    void changeStatusToCompleted(Long id);
 
     TaskServiceModel findById(long taskId);
 
     void update(Long id, TaskServiceModel taskServiceModel);
+
+    void changeTaskStatus();
 }

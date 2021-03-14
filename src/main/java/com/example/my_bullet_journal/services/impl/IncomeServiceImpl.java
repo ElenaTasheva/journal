@@ -1,12 +1,13 @@
 package com.example.my_bullet_journal.services.impl;
 
-import com.example.my_bullet_journal.models.entities.Expense;
 import com.example.my_bullet_journal.models.entities.Income;
+import com.example.my_bullet_journal.models.entities.User;
 import com.example.my_bullet_journal.models.enums.IncomeEnum;
 import com.example.my_bullet_journal.models.services.IncomeServiceModel;
 import com.example.my_bullet_journal.models.view.IncomeViewModel;
 import com.example.my_bullet_journal.repositories.IncomeRepository;
 import com.example.my_bullet_journal.services.IncomeService;
+import com.example.my_bullet_journal.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +23,16 @@ public class IncomeServiceImpl implements IncomeService {
 
     private final IncomeRepository incomeRepository;
     private final ModelMapper modelMapper;
+    private final UserService userService;
+    private final JournalDbUserService journalDbUserService;
+    private User user;
 
-    public IncomeServiceImpl(IncomeRepository incomeRepository, ModelMapper modelMapper) {
+    public IncomeServiceImpl(IncomeRepository incomeRepository, ModelMapper modelMapper, UserService userService, JournalDbUserService journalDbUserService) {
         this.incomeRepository = incomeRepository;
         this.modelMapper = modelMapper;
+        this.userService = userService;
+        this.journalDbUserService = journalDbUserService;
+        setCurrentUser();
     }
 
     @Override
@@ -64,6 +71,11 @@ public class IncomeServiceImpl implements IncomeService {
 
             }
             return result;
+        }
+
+
+        private void setCurrentUser(){
+            user = userService.findByEmail(this.journalDbUserService.getCurrentUserEmail());
         }
     }
 

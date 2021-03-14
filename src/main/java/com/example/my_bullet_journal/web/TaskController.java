@@ -32,15 +32,17 @@ public class TaskController {
 
 
     @GetMapping("/all")
-    @PreAuthorize("isAuthenticated()")
     public String showTasks(Model model) {
         model.addAttribute("tasks", taskService.getAllTasks());
+        model.addAttribute("noTaskFound", false);
+        if(taskService.getAllTasks().size()==0){
+            model.addAttribute("noTaskFound", true);
+        }
         return "all-tasks";
 
     }
 
     @GetMapping("/add")
-    @PreAuthorize("isAuthenticated()")
     public String showAddTask(Model model) {
         if (!model.containsAttribute("taskBindingModel")) {
             model.addAttribute("taskBindingModel", new TaskBindingModel());
@@ -51,7 +53,6 @@ public class TaskController {
     }
 
     @PostMapping("/add")
-    @PreAuthorize("isAuthenticated()")
     public String addTask(@Valid TaskBindingModel taskBindingModel,
                           BindingResult bindingResult,
                           RedirectAttributes redirectAttributes) {
@@ -69,16 +70,14 @@ public class TaskController {
 
 
     @DeleteMapping("/delete/{taskId}")
-    @PreAuthorize("isAuthenticated()")
     public String delete(@PathVariable long taskId) {
-        taskService.delete(taskId);
+        taskService.changeStatusToCompleted(taskId);
         return "redirect:/tasks/all";
     }
 
 
 
     @PostMapping("/edit/{taskId}")
-    @PreAuthorize("isAuthenticated()")
     public String editAction(@PathVariable long taskId,
                                    @Valid TaskBindingModel taskBindingModel,
                                    BindingResult bindingResult, RedirectAttributes redirectAttributes) {
@@ -96,7 +95,6 @@ public class TaskController {
 
 
     @GetMapping("/edit/{taskId}")
-    @PreAuthorize("isAuthenticated()")
     public String showEdit(Model model,@PathVariable long taskId){
         if(!model.containsAttribute("taskBindingModel")){
             model.addAttribute("taskBindingModel", new TaskBindingModel());
