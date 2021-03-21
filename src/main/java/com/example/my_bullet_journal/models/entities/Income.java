@@ -14,6 +14,7 @@ public class Income extends BudgetBaseEntity {
 
 
     private IncomeEnum category;
+    private User user;
 
     public Income() {
     }
@@ -28,4 +29,5 @@ public class Income extends BudgetBaseEntity {
         this.category = category;
         return this;
     }
+
 }

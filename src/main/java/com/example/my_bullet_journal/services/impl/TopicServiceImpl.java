@@ -23,6 +23,9 @@ public class TopicServiceImpl implements TopicService {
     private final ModelMapper modelMapper;
     private final TopicRepository topicRepository;
     private final CloudinaryService cloudinaryService;
+    private final String PATH_1 = "/colorlib-regform-7/colorlib-regform-7/images/motivational-question-1.jpg";
+    private final String PATH_2 = "/colorlib-regform-7/colorlib-regform-7/images/motivational-question-8.jpg";
+    private final String PATH_3 = "/colorlib-regform-7/colorlib-regform-7/images/motivational-question-2.jpg";
 
 
     public TopicServiceImpl(ModelMapper modelMapper, TopicRepository topicRepository, CloudinaryService cloudinaryService) {
@@ -34,7 +37,6 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public List<TopicViewModel> getAllTopics() {
-        //TODO throw an error if none or return something
         return this.topicRepository.findAll()
                 .stream().map(topic -> {
                     return  this.modelMapper.map(topic, TopicViewModel.class);
@@ -50,27 +52,28 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public TopicServiceModel getTopicById(Long id) {
-        Topic topic = this.topicRepository.findById(id).orElse(null);
-        //todo change method if it returns null
+        Topic topic = this.topicRepository.findById(id).orElseThrow(NullPointerException::new);
         return this.modelMapper.map(topic, TopicServiceModel.class);
     }
 
     @Override
     public Topic findByid(Long id) {
-        return this.topicRepository.findById(id).orElse(null);
-        //todo deal with the optional
+        //todo handle the exceptions
+        return this.topicRepository.findById(id).orElseThrow(NullPointerException::new);
     }
 
     @Override
     public void seedTopics() {
-        // todo change it to 0; save the pictures in the project
-        if(topicRepository.count() <= 1) {
+        if(topicRepository.count() == 0) {
             Topic topic = new Topic("What are the recent accomplishments that make me feel proud and successful?",
-                    "https://stunningmotivation.com/wp-content/uploads/2018/07/motivational-question-1.jpg");
+                    PATH_1);
             Topic topic1 = new Topic("What is the good advice that the 50 years old me will tell the 20 years old me?",
-                    "https://stunningmotivation.com/wp-content/uploads/2018/07/motivational-question-8.jpg");
+                    PATH_2);
+            Topic topic2 =  new Topic("What is the one step I can take right now to move closer to my goal?",
+                    PATH_3);
             topicRepository.save(topic);
             topicRepository.save(topic1);
+            topicRepository.save(topic2);
 
         }
     }

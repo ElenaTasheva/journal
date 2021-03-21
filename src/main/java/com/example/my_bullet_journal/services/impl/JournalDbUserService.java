@@ -2,10 +2,8 @@ package com.example.my_bullet_journal.services.impl;
 
 import com.example.my_bullet_journal.models.entities.User;
 import com.example.my_bullet_journal.repositories.UserRepository;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +15,7 @@ import java.util.stream.Collectors;
 @Component
 public class JournalDbUserService implements UserDetailsService {
 
-    private final  UserRepository userRepository;
+    private final UserRepository userRepository;
 
 
 
@@ -51,10 +49,5 @@ public class JournalDbUserService implements UserDetailsService {
     }
 
 
-    public String getCurrentUserEmail () {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return userDetails.getUsername();
-    }
 }
 

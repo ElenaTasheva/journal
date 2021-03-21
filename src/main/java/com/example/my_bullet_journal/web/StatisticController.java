@@ -1,8 +1,10 @@
 package com.example.my_bullet_journal.web;
 
-import com.example.my_bullet_journal.models.services.BudgetServiceModel;
 import com.example.my_bullet_journal.services.BudgetService;
+import com.example.my_bullet_journal.web.annotations.PageTitle;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +23,10 @@ public class StatisticController {
 
     @GetMapping("/statistic")
     @PreAuthorize("isAuthenticated()")
-    public String showStatistic(Model model){
-        model.addAttribute("budgetServiceModel", this.budgetService.getExpensesList());
-        model.addAttribute("incomeCategories", this.budgetService.getIncomeList());
+    @PageTitle("Statistic")
+    public String showStatistic(Model model,  @AuthenticationPrincipal UserDetails user){
+        model.addAttribute("budgetServiceModel", this.budgetService.getExpensesList(user.getUsername()));
+        model.addAttribute("incomeCategories", this.budgetService.getIncomeList(user.getUsername()));
         model.addAttribute("income", this.budgetService.getIncomeSum());
         model.addAttribute("expense", this.budgetService.getExpensesSum());
         model.addAttribute("balance", this.budgetService.getBalance());

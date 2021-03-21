@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface TaskService {
     List<DailyCategoryEnum> getAllCategories();
-    //TODO: change the return method
-    void save(TaskServiceModel map);
 
-    List<TaskViewModel> getAllTasks();
+    void save(TaskServiceModel map, String email);
+
+    List<TaskViewModel> getAllTasks(String email);
 
     void changeStatusToCompleted(Long id);
 
@@ -20,5 +20,5 @@ public interface TaskService {
 
     void update(Long id, TaskServiceModel taskServiceModel);
 
-    void changeTaskStatus();
+    void changeTaskStatusWhenStartingTheApp();
 }

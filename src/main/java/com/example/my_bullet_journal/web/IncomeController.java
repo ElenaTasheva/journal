@@ -6,6 +6,8 @@ import com.example.my_bullet_journal.models.services.IncomeServiceModel;
 import com.example.my_bullet_journal.services.IncomeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,7 +47,8 @@ public class IncomeController {
     @PreAuthorize("isAuthenticated()")
     public String add(@Valid IncomeBindingModel incomeBindingModel,
                            BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes){
+                           RedirectAttributes redirectAttributes,
+                      @AuthenticationPrincipal UserDetails user){
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("incomeBindingModel", incomeBindingModel);
@@ -53,7 +56,7 @@ public class IncomeController {
             return "redirect:add";
         }
 
-        incomeService.save(this.modelMapper.map(incomeBindingModel, IncomeServiceModel.class));
+        incomeService.save(this.modelMapper.map(incomeBindingModel, IncomeServiceModel.class), user.getUsername());
 
         return "redirect:all";
 
@@ -61,9 +64,9 @@ public class IncomeController {
 
     @GetMapping("/all")
     @PreAuthorize("isAuthenticated()")
-    public String showAll(Model model){
-        model.addAttribute("income", this.incomeService.getAllIncome());
-        model.addAttribute("total", this.incomeService.getTotalIncome());
+    public String showAll(Model model, @AuthenticationPrincipal UserDetails user){
+        model.addAttribute("income", this.incomeService.getAllIncome(user.getUsername()));
+        model.addAttribute("total", this.incomeService.getTotalIncome(user.getUsername()));
         return "income";
     }
 }

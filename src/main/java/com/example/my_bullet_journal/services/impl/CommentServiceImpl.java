@@ -3,17 +3,17 @@ package com.example.my_bullet_journal.services.impl;
 import com.example.my_bullet_journal.models.bindings.CommentBindingModel;
 import com.example.my_bullet_journal.models.entities.Comment;
 import com.example.my_bullet_journal.models.entities.Topic;
-import com.example.my_bullet_journal.models.services.TopicServiceModel;
+import com.example.my_bullet_journal.models.entities.User;
 import com.example.my_bullet_journal.models.view.CommentViewModel;
 import com.example.my_bullet_journal.repositories.CommentRepository;
 import com.example.my_bullet_journal.services.CommentService;
 import com.example.my_bullet_journal.services.TopicService;
 import com.example.my_bullet_journal.services.UserService;
+import org.apache.http.HttpException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +37,7 @@ public class CommentServiceImpl implements CommentService {
                 .stream().map(comment -> {
                     CommentViewModel view = this.modelMapper.map(comment, CommentViewModel.class);
                     view.setUsername(comment.getUser().getUsername());
+                    view.setEmail(comment.getUser().getEmail());
                     return view;
                 })
 
@@ -49,13 +50,19 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void addCommentToToppic(Long id, CommentBindingModel commentBindingModel) {
+    public void addCommentToToppic(Long id, CommentBindingModel commentBindingModel, String userEmail) {
+        User user = this.userService.findByEmail(userEmail);
         Topic topic = this.topicService.findByid(id);
         Comment comment = this.modelMapper.map(commentBindingModel, Comment.class);
         comment.setTopic(topic);
-        comment.setUser(userService.getUserByUsername("pesho123"));
+        comment.setUser(user);
         this.commentRepository.save(comment);
-        //todo setUser
 
+    }
+
+    @Override
+    public void delete(long commentId) throws HttpException {
+       Comment comment = this.commentRepository.findById(commentId).orElseThrow(HttpException::new);
+       this.commentRepository.delete(comment);
     }
 }

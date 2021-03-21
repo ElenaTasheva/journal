@@ -6,10 +6,10 @@
 <th:block th:include="~{fragments/nav}"></th:block>
 
 <div th:if="${emptyBalance}">
-<h3 id="balance-empty" >Please add data. The balance is empty</h3>
+    <h3 id="balance-empty" >Please add data. The balance is empty</h3>
     <span>
             <form th:action= "@{/expenses/add}"
-                 class="add-expense-empty-balance">
+                  class="add-expense-empty-balance">
             <input  class="btn btn-primary-sm btn btn-outline-light" type="submit" value="Add Expense"></input>
                 </form>
                 <form th:action= "@{/income/add}"
@@ -19,7 +19,7 @@
                 </span>
 </div>
 <div id="wrap-donuts">
-<div id="donutchart" style="width: 700px; height: 500px; float:left; margin: 10px"></div>
+    <div id="donutchart" style="width: 700px; height: 500px; float:left; margin: 10px"></div>
     <div  id="donutchart3" style="width: 700px; height: 500px; margin: 10px">
     </div>
     <div id="donutchart2" style="width: 700px; height: 500px; float:left; margin: 10px"></div>
@@ -79,32 +79,32 @@
     // secondChart - income
     google.charts.load("current", {packages:["corechart"]});
     google.charts.setOnLoadCallback(drawChart2);
-        function drawChart2() {
-            let salary = [[${incomeCategories['SALARY']}]];
-            let deposit = [[${incomeCategories['DEPOSIT']}]];
-            let investment = [[${incomeCategories['INVESTMENT']}]];
-            let other = [[${incomeCategories['OTHER']}]];
-            let empty = [[${incomeCategories['NO DATA']}]];
+    function drawChart2() {
+        let salary = [[${incomeCategories['SALARY']}]];
+        let deposit = [[${incomeCategories['DEPOSIT']}]];
+        let investment = [[${incomeCategories['INVESTMENT']}]];
+        let other = [[${incomeCategories['OTHER']}]];
+        let empty = [[${incomeCategories['NO DATA']}]];
 
-            // if there is no data just set it to 100 by default
+        // if there is no data just set it to 100 by default
 
-            var data = google.visualization.arrayToDataTable([
-                ['Task', 'Hours per Day'],
-                ['Salary', salary],
-                ['Deposit', deposit],
-                ['Investment', investment],
-                ['Other', other],
-                ['No Data', empty]
-            ]);
+        var data = google.visualization.arrayToDataTable([
+            ['Task', 'Hours per Day'],
+            ['Salary', salary],
+            ['Deposit', deposit],
+            ['Investment', investment],
+            ['Other', other],
+            ['No Data', empty]
+        ]);
 
-            var options = {
-                title: 'My Income',
-                pieHole: 0.4,
-            };
+        var options = {
+            title: 'My Income',
+            pieHole: 0.4,
+        };
 
-            var chart = new google.visualization.PieChart(document.getElementById('donutchart2'));
-            chart.draw(data, options);
-        }
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart2'));
+        chart.draw(data, options);
+    }
 
     google.charts.load("current", {packages:["corechart"]});
     google.charts.setOnLoadCallback(drawChart3);
@@ -129,10 +129,10 @@
         chart.draw(data, options);
     }
 </script>
- <!-- scripts -->
+<!-- scripts -->
 
 
-<th:block th:include="~{fragments/footer}"></th:block>
+
 
 </body>
 </html>

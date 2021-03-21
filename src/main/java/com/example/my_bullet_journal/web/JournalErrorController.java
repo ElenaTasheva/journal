@@ -3,7 +3,6 @@ package com.example.my_bullet_journal.web;
 import org.apache.http.HttpStatus;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.RequestDispatcher;
@@ -23,12 +22,14 @@ public class JournalErrorController implements ErrorController {
 
             if (statusCode == HttpStatus.SC_NOT_FOUND) {
                 return "error-404";
-
-
+            }
+            else if (statusCode == HttpStatus.SC_FORBIDDEN) {
+                return "error-403";
             }
 
         }
-        return "error-404";
+               return "error-500";
+
     }
 
 

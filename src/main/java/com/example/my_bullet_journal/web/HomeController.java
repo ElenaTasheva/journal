@@ -2,10 +2,12 @@ package com.example.my_bullet_journal.web;
 
 
 import com.example.my_bullet_journal.services.QuoteService;
+import com.example.my_bullet_journal.web.annotations.PageTitle;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
 
 @Controller
 public class HomeController {
@@ -16,10 +18,10 @@ public class HomeController {
         this.quoteService = quoteService;
     }
 
-
     @GetMapping("/")
     @PreAuthorize("isAnonymous()")
-    public String showHome(Model model){
+    @PageTitle("Home")
+    public String showIndex(Model model){
         if(!model.containsAttribute("quoteViewModel")){
             model.addAttribute("quoteViewModel", this.quoteService.getRandomQuote());
         }
@@ -28,9 +30,12 @@ public class HomeController {
 
     }
 
+
+
     @GetMapping("/home")
     @PreAuthorize("isAuthenticated()")
-    public String showIndex(Model model){
+    @PageTitle("Home")
+    public String showHomeAuth(Model model){
         if(!model.containsAttribute("quoteViewModel")){
             model.addAttribute("quoteViewModel", this.quoteService.getRandomQuote());
         }

@@ -7,6 +7,7 @@ import com.example.my_bullet_journal.models.services.BudgetServiceModel;
 import com.example.my_bullet_journal.services.BudgetService;
 import com.example.my_bullet_journal.services.ExpenseService;
 import com.example.my_bullet_journal.services.IncomeService;
+import com.example.my_bullet_journal.services.UserService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,18 +20,21 @@ public class BudgedServiceImpl implements BudgetService {
     private final ExpenseService expenseService;
     private final IncomeService incomeService;
     private final BudgetServiceModel budgetServiceModel = new BudgetServiceModel();
+    private final UserService userService;
 
-    public BudgedServiceImpl(ExpenseService expenseService, IncomeService incomeService) {
+    public BudgedServiceImpl(ExpenseService expenseService, IncomeService incomeService, UserService userService) {
         this.expenseService = expenseService;
         this.incomeService = incomeService;
+        this.userService = userService;
     }
 
     @Override
-    public HashMap<String, BigDecimal> getExpensesList() {
-        budgetServiceModel.setExpensesCategory(this.expenseService.expensesByCategory());
+    public HashMap<String, BigDecimal> getExpensesList(String email) {
+        Long userId = this.userService.findByEmail(email).getId();
+        budgetServiceModel.setExpensesCategory(this.expenseService.expensesByCategory(userId));
         checkIfAllEmpty(budgetServiceModel.getExpensesCategory());
         setAllCategories();
-        setTotalSums();
+        setTotalSums(email);
 
         return budgetServiceModel.getExpensesCategory();
     }
@@ -47,17 +51,18 @@ public class BudgedServiceImpl implements BudgetService {
 
 
     @Override
-    public HashMap<String, BigDecimal> getIncomeList() {
-        budgetServiceModel.setIncomeCategory(this.incomeService.incomeByCategory());
+    public HashMap<String, BigDecimal> getIncomeList(String email) {
+        Long userId = this.userService.findByEmail(email).getId();
+        budgetServiceModel.setIncomeCategory(this.incomeService.incomeByCategory(userId));
         checkIfAllEmpty(budgetServiceModel.getIncomeCategory());
-        setAllCategoriesIncome();
+        setAllCategoriesIncome(email);
 
         return budgetServiceModel.getIncomeCategory();
     }
 
     @Override
     public BigDecimal getIncomeSum() {
-        return this.budgetServiceModel.getSumIncome();
+        return this.budgetServiceModel.getSumIncome() != null ? this.budgetServiceModel.getSumIncome() : BigDecimal.valueOf(0) ;
     }
 
     @Override
@@ -67,16 +72,15 @@ public class BudgedServiceImpl implements BudgetService {
 
     @Override
     public BigDecimal getBalance() {
-        // invoking subtract when the income and expenses is null or there is no data yet
         try{
-            return this.budgetServiceModel.getSumIncome().subtract(this.budgetServiceModel.getSumExpenses());
+            return getIncomeSum().subtract(getExpensesSum());
         }
         catch (NullPointerException ex){
             return BigDecimal.valueOf(0);
         }
     }
 
-    private void setAllCategoriesIncome() {
+    private void setAllCategoriesIncome(String email) {
         Arrays.stream(IncomeEnum.values())
                 .forEach(value -> {
                     budgetServiceModel.getIncomeCategory()
@@ -94,9 +98,9 @@ public class BudgedServiceImpl implements BudgetService {
 
     }
 
-    private void setTotalSums(){
-        this.budgetServiceModel.setSumExpenses(this.expenseService.getTotalAmountOfExpenses());
-        this.budgetServiceModel.setSumIncome(this.incomeService.getTotalIncome());
+    private void setTotalSums(String userEmail){
+        this.budgetServiceModel.setSumExpenses(this.expenseService.getTotalAmountOfExpenses(userEmail));
+        this.budgetServiceModel.setSumIncome(this.incomeService.getTotalIncome(userEmail));
     }
 
 }

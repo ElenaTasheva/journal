@@ -55,6 +55,7 @@ public abstract class BudgetBaseEntity  extends BaseEntity{
     }
 
     @ManyToOne
+    @NotNull
     public User getUser() {
         return user;
     }
@@ -66,6 +67,7 @@ public abstract class BudgetBaseEntity  extends BaseEntity{
 
 
 
+    @Enumerated(EnumType.STRING)
     public BudgetStatusEnum getStatus() {
         return status;
     }

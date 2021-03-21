@@ -23,13 +23,15 @@ public class QuoteServiceImpl implements QuoteService {
     private final QuoteRepository quoteRepository;
     private final String PATH = "src/main/resources/static/files/inspirational";
     private final ModelMapper modelMapper;
-    private final List<Quote> quotes;
+    private Quote quote;
+
 
     public QuoteServiceImpl(QuoteRepository quoteRepository, ModelMapper modelMapper) {
         this.quoteRepository = quoteRepository;
         this.modelMapper = modelMapper;
-        quotes = this.quoteRepository.findAll();
     }
+
+
 
     @Override
     public void save() throws IOException {
@@ -41,12 +43,19 @@ public class QuoteServiceImpl implements QuoteService {
                 quoteRepository.save(quote1);
             }
         }
+        setQuote();
 
+    }
+
+    private void setQuote() {
+        quote = getRandom();
     }
 
     @Override
     public QuoteViewModel getRandomQuote() {
-        Quote quote = random();
+        if(quote == null){
+            setQuote();
+        }
         return this.modelMapper.map(quote, QuoteViewModel.class);
     }
 
@@ -58,9 +67,10 @@ public class QuoteServiceImpl implements QuoteService {
         quoteRepository.save(this.modelMapper.map(quoteBindingModel, Quote.class));
     }
 
-    private Quote random() {
+    private Quote getRandom() {
         Random random = new Random();
-        // todo fix the random not to return a negative number
-        return quotes.get(random.nextInt(quotes.size() -1) + 1);
+        List<Quote> quotes = this.quoteRepository.findAll();
+        int index =  random.nextInt(quotes.size() - 1) + 1;
+        return quotes.get(index);
     }
 }

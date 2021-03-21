@@ -3,8 +3,11 @@ package com.example.my_bullet_journal.web;
 import com.example.my_bullet_journal.models.bindings.ExpenseBindingModel;
 import com.example.my_bullet_journal.models.services.ExpenseServiceModel;
 import com.example.my_bullet_journal.services.ExpenseService;
+import com.example.my_bullet_journal.web.annotations.PageTitle;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +32,9 @@ public class ExpenseController {
 
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Expenses - add")
+
+
     public String showAdd(Model model){
         if(!model.containsAttribute("expenseBindingModel")){
             model.addAttribute("expenseBindingModel", new ExpenseBindingModel());
@@ -42,7 +48,8 @@ public class ExpenseController {
     @PreAuthorize("isAuthenticated()")
     public String add(@Valid ExpenseBindingModel expenseBindingModel,
                            BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes){
+                           RedirectAttributes redirectAttributes,
+                           @AuthenticationPrincipal UserDetails user){
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("expenseBindingModel", expenseBindingModel);
@@ -50,7 +57,7 @@ public class ExpenseController {
             return "redirect:add";
             }
 
-        expenseService.save(this.modelMapper.map(expenseBindingModel, ExpenseServiceModel.class));
+        expenseService.save(this.modelMapper.map(expenseBindingModel, ExpenseServiceModel.class), user.getUsername());
 
         return "redirect:all";
 
@@ -58,9 +65,10 @@ public class ExpenseController {
 
     @GetMapping("/all")
     @PreAuthorize("isAuthenticated()")
-    public String showAll(Model model){
-        model.addAttribute("expenses", this.expenseService.getAllExpenses());
-        model.addAttribute("total", this.expenseService.getTotalAmountOfExpenses());
+    @PageTitle("Expenses")
+    public String showAll(Model model, @AuthenticationPrincipal UserDetails user){
+        model.addAttribute("expenses", this.expenseService.getAllExpenses(user.getUsername()));
+        model.addAttribute("total", this.expenseService.getTotalAmountOfExpenses(user.getUsername()));
         return "expenses";
     }
 

@@ -25,13 +25,12 @@ spring:
       enabled: true
 
 cloudinary:
- api-key: 475892765127179
+ api-key:
  api-secret:
  cloud-name: dxwfwbxq2
 
-#  servlet:
-#    multipart:
-#      max-file-size: 5MB
-#      max-request-size: 5MB
-#      enabled: true
 
+social:
+ facebook:
+  appId: 896588447843613
+  appSecret: ${API_SECRET}

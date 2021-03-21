@@ -13,4 +13,5 @@ public interface UserService {
     void seedAdmin();
 
     User findByEmail(String currentUserEmail);
+
 }

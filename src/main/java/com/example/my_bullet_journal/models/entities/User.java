@@ -14,9 +14,7 @@ public class User extends BaseEntity{
     private String username;
     private String email;
     private String password;
-    private Set<DailyTask> tasks  = new HashSet<>();
     private Set<Role> roles;
-    private List<Expense> expenses;
     public User() {
     }
 
@@ -50,15 +48,6 @@ public class User extends BaseEntity{
         return this;
     }
 
-    @OneToMany(mappedBy = "user")
-    public Set<DailyTask> getTasks() {
-        return tasks;
-    }
-
-    public User setTasks(Set<DailyTask> tasks) {
-        this.tasks = tasks;
-        return this;
-    }
 
     @ManyToMany(fetch = FetchType.EAGER)
     public Set<Role> getRoles() {
@@ -70,13 +59,5 @@ public class User extends BaseEntity{
         return this;
     }
 
-    @OneToMany(mappedBy = "user")
-    public List<Expense> getExpenses() {
-        return expenses;
-    }
 
-    public User setExpenses(List<Expense> expenses) {
-        this.expenses = expenses;
-        return this;
-    }
 }

@@ -12,11 +12,11 @@ import java.util.List;
 public interface IncomeService {
     List<IncomeEnum> getCategories();
 
-    void save(IncomeServiceModel incomeServiceModel);
+    void save(IncomeServiceModel incomeServiceModel, String userEmail);
 
-    List<IncomeViewModel> getAllIncome();
+    List<IncomeViewModel> getAllIncome(String email);
 
-    BigDecimal getTotalIncome();
+    BigDecimal getTotalIncome(String email);
 
-    HashMap<String, BigDecimal> incomeByCategory();
+    HashMap<String, BigDecimal> incomeByCategory(Long userId);
 }

@@ -1,10 +1,7 @@
 package com.example.my_bullet_journal.web;
 
 
-import com.example.my_bullet_journal.models.bindings.CommentBindingModel;
 import com.example.my_bullet_journal.models.bindings.TopicBindingModel;
-import com.example.my_bullet_journal.models.services.ExpenseServiceModel;
-import com.example.my_bullet_journal.services.CommentService;
 import com.example.my_bullet_journal.services.TopicService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;

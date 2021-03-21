@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,6 @@ public interface TaskRepository extends JpaRepository<DailyTask, Long> {
 
     List<DailyTask> findAll();
 
-    @Query("SELECT t from DailyTask t WHERE t.status='INPROGRESS' AND t.dueOn <= :localDateTime")
-    List<DailyTask> findAllTaskThatAreGoingToExpired(Instant localDateTime);
+    @Query("SELECT t from DailyTask t WHERE t.status='INPROGRESS' AND t.dueOn < :date")
+    List<DailyTask> findAllTaskThatAreExpired(LocalDate date);
 }

@@ -12,17 +12,20 @@ import java.util.List;
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     @Query(
-            value = "SELECT * FROM expenses ORDER BY category",
+            value = "SELECT * FROM expenses " +
+                    "WHERE user_id = :userId AND status = 'ACTIVE' " +
+                    "ORDER BY category",
             nativeQuery = true)
-    List<Expense> findAllAndOrderByCategory();
+    List<Expense> findAllAndOrderByCategory(Long userId);
 
-    @Query("SELECT SUM(e.amount) FROM Expense e")
-    BigDecimal getTotal();
+    @Query("SELECT SUM(e.amount) FROM Expense e " +
+            "WHERE e.user.id = :userId AND e.status = 'ACTIVE' ")
+    BigDecimal getTotal(Long userId);
 
     @Query(
             value = "select category, SUM(amount) " +
-                    "FROM expenses " +
+                    "FROM expenses WHERE user_id = :userId AND status = 'ACTIVE' " +
                     "GROUP BY category",
             nativeQuery = true)
-   List<Object[]> finExpensesByCategories();
+   List<Object[]> finExpensesByCategories(Long userId);
 }

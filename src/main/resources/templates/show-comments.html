@@ -1,5 +1,7 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
 <th:block th:include="~{fragments/head-forms}"></th:block>
 
 <body>
@@ -27,9 +29,15 @@
                 padding-right: 40px;">
         <div class="card">
             <div style="border-color: #259bca; background-color: whitesmoke" >
+
                 <h5 class="card-title" th:text="${c.username}">Special title treatment</h5>
                 <p class="card-text-success" th:text="${c.text}">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-secondary" style="background-color: #8db8e0; margin-left: 200px;">Delete</a>
+                <form th:action= "@{/topics/comments/{id}/delete/{commentid}(id=${topic.id},commentid=${c.id})}"
+                      th:method="DELETE"
+                      style="display: initial;padding-left: 240px;">
+                    <input th:if="${hasRoleAdmin} or ${c.email}==${namePrincipal}"  type="submit" value="Delete" class="btn btn-secondary btn-sm"
+                           style="background-color: #8db8e0; margin-left: 200px;"/>
+                </form>
             </div>
         </div>
     </div>

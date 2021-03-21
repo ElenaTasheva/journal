@@ -8,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,10 +34,10 @@ public class TaskController {
 
 
     @GetMapping("/all")
-    public String showTasks(Model model) {
-        model.addAttribute("tasks", taskService.getAllTasks());
+    public String showTasks(Model model, @AuthenticationPrincipal UserDetails user) {
+        model.addAttribute("tasks", taskService.getAllTasks(user.getUsername()));
         model.addAttribute("noTaskFound", false);
-        if(taskService.getAllTasks().size()==0){
+        if(taskService.getAllTasks(user.getUsername()).size()==0){
             model.addAttribute("noTaskFound", true);
         }
         return "all-tasks";
@@ -55,14 +57,15 @@ public class TaskController {
     @PostMapping("/add")
     public String addTask(@Valid TaskBindingModel taskBindingModel,
                           BindingResult bindingResult,
-                          RedirectAttributes redirectAttributes) {
+                          RedirectAttributes redirectAttributes,
+                          @AuthenticationPrincipal UserDetails user) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("taskBindingModel", taskBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.taskBindingModel", bindingResult);
             return "redirect:add";
         }
 
-        this.taskService.save(this.modelMapper.map(taskBindingModel, TaskServiceModel.class));
+        this.taskService.save(this.modelMapper.map(taskBindingModel, TaskServiceModel.class), user.getUsername());
 
         return "redirect:all";
 

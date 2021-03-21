@@ -4,7 +4,6 @@ import com.example.my_bullet_journal.models.bindings.UserRegisterBindingModel;
 import com.example.my_bullet_journal.models.services.UserRegisterServiceModel;
 import com.example.my_bullet_journal.services.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -32,7 +30,11 @@ public class UserController {
 
 
     @GetMapping("/login")
-    public String showLogin(){
+    public String showLogin(Model model){
+        if(!model.containsAttribute("bad_credentials")){
+            model.addAttribute("bad_credentials", false);
+        }
+
         return "login";
 
     }
@@ -42,8 +44,8 @@ public class UserController {
          return new UserRegisterBindingModel();
       }
 
-  @PostMapping("/login-error")
-  @PreAuthorize("isAnonymous()")
+
+      @PostMapping("/login-error")
     public String failedLogin(@ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
         String username, RedirectAttributes attributes) {
 
@@ -69,7 +71,6 @@ public class UserController {
             redirectAttributes.addFlashAttribute("userExistsError", false);
             return "redirect:register";
         }
-
          try {
              userService.registerAndLogin(this.modelMapper.map(userRegisterBindingModel, UserRegisterServiceModel.class));
          } catch (IllegalArgumentException ex) {
@@ -77,6 +78,7 @@ public class UserController {
           redirectAttributes.addFlashAttribute("userExistsError", true);
           return "redirect:register";
          }
+
            
              return "redirect:/home";
         }

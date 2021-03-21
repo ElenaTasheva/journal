@@ -6,12 +6,13 @@
 
 <div class="card-columns" style="padding: 80px">
     <div th:each=" t: ${topics}" class="card" style="width: 18rem;" >
-        <a th:href="@{/topics/comments/{id}(id=${t.id})}">view</a>
-        <img th:src="${t.imageUrl}"  class="card-img-top" alt="..." >
+        <a th:href="@{/topics/comments/{id}(id=${t.id})}">
+        <img th:src="${t.imageUrl}"   class="card-img-top" alt="..." >
         <div class="card-body">
             <p th:text="${t.title}" class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 
         </div>
+        </a>
     </div>
 </div>
 

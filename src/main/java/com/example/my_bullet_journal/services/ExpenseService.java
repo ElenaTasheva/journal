@@ -13,14 +13,14 @@ public interface ExpenseService {
     List<ExpenseEnum> getCategories();
 
     //todo fix the return type
-    void save(ExpenseServiceModel map);
+    void save(ExpenseServiceModel map, String userEmail);
 
     //todo fix it to service model
-    List<ExpenseViewModel> getAllExpenses();
+    List<ExpenseViewModel> getAllExpenses(String email);
 
-    BigDecimal getTotalAmountOfExpenses();
+    BigDecimal getTotalAmountOfExpenses(String email);
 
-    HashMap<String, BigDecimal> expensesByCategory();
+    HashMap<String, BigDecimal> expensesByCategory(Long userId);
 
 
 }

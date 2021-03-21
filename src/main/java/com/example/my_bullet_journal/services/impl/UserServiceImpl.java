@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsername(String username) {
-        return this.userRepository.findByUsername(username).orElse(null);
+        return this.userRepository.findByUsername(username).orElseThrow(NullPointerException::new);
     }
 
     @Override
@@ -46,8 +47,6 @@ public class UserServiceImpl implements UserService {
         User user = modelMapper.map(userRegisterServiceModel, User.class);
 
 
-
-        // throw an error if email is already registered
         if(userRepository.findByEmail(userRegisterServiceModel.getEmail()).isPresent()){
             throw  new IllegalArgumentException("This email is already registered");
         }
@@ -75,7 +74,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void seedAdmin() {
-        //todo change the name to admin
+
         if(userRepository.findByEmail("admin@gmail.com").isEmpty()){
         User user = new User();
         user.setEmail("admin@gmail.com")
@@ -92,6 +91,8 @@ public class UserServiceImpl implements UserService {
     public User findByEmail(String currentUserEmail) {
         return this.userRepository.findByEmail(currentUserEmail).get();
     }
+
+
 
 
 }

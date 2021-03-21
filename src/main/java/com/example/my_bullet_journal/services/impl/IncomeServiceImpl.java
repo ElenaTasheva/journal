@@ -3,15 +3,18 @@ package com.example.my_bullet_journal.services.impl;
 import com.example.my_bullet_journal.models.entities.Income;
 import com.example.my_bullet_journal.models.entities.User;
 import com.example.my_bullet_journal.models.enums.IncomeEnum;
+import com.example.my_bullet_journal.models.enums.StatusEnum;
 import com.example.my_bullet_journal.models.services.IncomeServiceModel;
 import com.example.my_bullet_journal.models.view.IncomeViewModel;
 import com.example.my_bullet_journal.repositories.IncomeRepository;
 import com.example.my_bullet_journal.services.IncomeService;
 import com.example.my_bullet_journal.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -25,14 +28,13 @@ public class IncomeServiceImpl implements IncomeService {
     private final ModelMapper modelMapper;
     private final UserService userService;
     private final JournalDbUserService journalDbUserService;
-    private User user;
+
 
     public IncomeServiceImpl(IncomeRepository incomeRepository, ModelMapper modelMapper, UserService userService, JournalDbUserService journalDbUserService) {
         this.incomeRepository = incomeRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.journalDbUserService = journalDbUserService;
-        setCurrentUser();
     }
 
     @Override
@@ -42,28 +44,32 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
-    public void save(IncomeServiceModel incomeServiceModel) {
+    public void save(IncomeServiceModel incomeServiceModel, String email) {
+        User user = this.userService.findByEmail(email);
         Income income = this.modelMapper.map(incomeServiceModel, Income.class);
-        //todo: get the currently login user and delete userRepo from here and from Income;
+        income.setUser(user);
         this.incomeRepository.save(income);
     }
 
     @Override
-    public List<IncomeViewModel> getAllIncome() {
-        return this.incomeRepository.findAllAndOrderByCategory()
+    public List<IncomeViewModel> getAllIncome(String email) {
+        Long userId = this.userService.findByEmail(email).getId();
+        return this.incomeRepository.findAllAndOrderByCategory(userId)
                 .stream().map(income -> this.modelMapper.map(income,IncomeViewModel.class))
                 .collect(Collectors.toList());
+
     }
 
     @Override
-    public BigDecimal getTotalIncome() {
-        return this.incomeRepository.getTotal() != null ? this.incomeRepository.getTotal() : BigDecimal.valueOf(0) ;
+    public BigDecimal getTotalIncome(String email) {
+        Long userId = this.userService.findByEmail(email).getId();
+        return this.incomeRepository.getTotal(userId) != null ? this.incomeRepository.getTotal(userId) : BigDecimal.valueOf(0) ;
     }
 
     @Override
-    public HashMap<String, BigDecimal> incomeByCategory() {
+    public HashMap<String, BigDecimal> incomeByCategory(Long userId) {
         HashMap<String, BigDecimal> result = new HashMap<>();
-            List<Object[]> list = this.incomeRepository.findIncomeByCategory();
+            List<Object[]> list = this.incomeRepository.findIncomeByCategory(userId);
             for (Object[] ob: list) {
                 String key = (String)ob[0];
                 BigDecimal value = (BigDecimal) ob[1];
@@ -74,8 +80,14 @@ public class IncomeServiceImpl implements IncomeService {
         }
 
 
-        private void setCurrentUser(){
-            user = userService.findByEmail(this.journalDbUserService.getCurrentUserEmail());
-        }
+
+        // completing the month and starting next month from 0
+    @Scheduled(cron = "0 0 0 1 * *")
+    private void changeTaskStatus() {
+        this.incomeRepository.changeMonthlyStatus(LocalDate.now());
+
     }
+
+
+}
 

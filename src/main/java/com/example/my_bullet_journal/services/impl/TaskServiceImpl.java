@@ -1,7 +1,6 @@
 package com.example.my_bullet_journal.services.impl;
 
 import com.example.my_bullet_journal.models.entities.DailyTask;
-import com.example.my_bullet_journal.models.entities.User;
 import com.example.my_bullet_journal.models.enums.DailyCategoryEnum;
 import com.example.my_bullet_journal.models.enums.StatusEnum;
 import com.example.my_bullet_journal.models.services.TaskServiceModel;
@@ -13,7 +12,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
+import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -25,14 +25,13 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final ModelMapper modelMapper;
     private final UserService userService;
-    private final  JournalDbUserService journalDbUserService;
-    private User user;
 
-    public TaskServiceImpl(TaskRepository taskRepository, ModelMapper modelMapper, UserService userService, JournalDbUserService journalDbUserService) {
+
+    public TaskServiceImpl(TaskRepository taskRepository, ModelMapper modelMapper, UserService userService) {
         this.taskRepository = taskRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
-        this.journalDbUserService = journalDbUserService;
+
     }
 
     @Override
@@ -41,21 +40,19 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void save(TaskServiceModel taskServiceModel) {
-        taskServiceModel.setUser(user);
+    public void save(TaskServiceModel taskServiceModel, String email) {
+        taskServiceModel.setUser(this.userService.findByEmail(email));
         DailyTask dailyTask = this.modelMapper.map(taskServiceModel, DailyTask.class);
         taskRepository.save(dailyTask);
 
     }
 
     @Override
-    public List<TaskViewModel> getAllTasks() {
-        user = getCurrentUser();
-        Long id = user.getId();
+    public List<TaskViewModel> getAllTasks(String email) {
+        Long id = userService.findByEmail(email).getId();
         return this.taskRepository.findAllByStatus(StatusEnum.INPROGRESS, id)
                 .stream().map(task -> {
-                 TaskViewModel view =  this.modelMapper.map(task, TaskViewModel.class);
-                 return view;
+                    return this.modelMapper.map(task, TaskViewModel.class);
                 }).collect(Collectors.toList());
     }
 
@@ -78,27 +75,32 @@ public class TaskServiceImpl implements TaskService {
     public void update(Long id, TaskServiceModel taskServiceModel) {
         DailyTask task = this.taskRepository.findById(id).orElseThrow(NullPointerException::new);
         taskServiceModel.setId(id);
-        taskServiceModel.setUser(user);
+         taskServiceModel.setUser(task.getUser());
         task = this.modelMapper.map(taskServiceModel, DailyTask.class);
         this.taskRepository.save(task);
 
     }
 
-    @Override
-    @Scheduled(cron = "0 59 23 * * *")
-    public void changeTaskStatus() {
-        this.taskRepository.findAllTaskThatAreGoingToExpired(Instant.now())
-                .stream()
-                .peek(t -> {
+//checking if tasks in the past are not completed and mark them as expired
+    @Scheduled(cron = "0 0 0 * * *")
+    private void changeTaskStatus() {
+        this.taskRepository.findAllTaskThatAreExpired(LocalDate.now())
+                .forEach(t -> {
                     t.setStatus(StatusEnum.EXPIRED);
                     taskRepository.save(t);
                 });
 
     }
 
+    // checxking what has been expiried when starting the app
 
-    private User  getCurrentUser(){
-        return userService.findByEmail(this.journalDbUserService.getCurrentUserEmail());
+   // @PostConstruct
+    public void changeTaskStatusWhenStartingTheApp() {
+        this.taskRepository.findAllTaskThatAreExpired(LocalDate.now())
+                .forEach(t -> {
+                    t.setStatus(StatusEnum.EXPIRED);
+                    taskRepository.save(t);
+                });
 
     }
 

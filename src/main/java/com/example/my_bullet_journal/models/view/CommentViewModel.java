@@ -5,6 +5,7 @@ public class CommentViewModel {
     private Long id;
     private String text;
     private String username;
+    private String email;
 
 
     public CommentViewModel() {
@@ -34,6 +35,15 @@ public class CommentViewModel {
 
     public CommentViewModel setUsername(String username) {
         this.username = username;
+        return this;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public CommentViewModel setEmail(String email) {
+        this.email = email;
         return this;
     }
 }

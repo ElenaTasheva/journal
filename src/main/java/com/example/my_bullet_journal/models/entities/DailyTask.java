@@ -67,6 +67,7 @@ public class DailyTask extends BaseEntity{
     }
 
     @ManyToOne
+    @NotNull
     public User getUser() {
         return user;
     }

@@ -1,11 +1,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<th:block th:include="~{fragments/head-index}"></th:block>
+<th:block th:include="~{fragments/head-forms}"></th:block>
+
 
 	<body>
 	<th:block th:include="~{fragments/nav}"></th:block>
-<!-- Header -->
+
 			<header id="header" class="alt">
 				<blockquote>&nbsp;</blockquote>
 				<div class="inner">
@@ -21,11 +22,12 @@
 					<section id="intro" class="main">
 						<span class="icon fa-diamond major"></span>
 						<h2>Your daily quote</h2>
-						<p id="th-par" style="font-family: Atrament" th:text="|'${quoteViewModel.text} - ${quoteViewModel.author}'|" ></p>
+						<br>
+						<h6   style="font-family: Proxima Nova" th:text="|'${quoteViewModel.text} - ${quoteViewModel.author}'|" ></h6>
 						
 					</section>
 
-				<!-- Items -->
+
 					
 				<!-- Footer -->
 				<th:block th:include="~{fragments/footer}"></th:block>
@@ -33,7 +35,6 @@
 
 			</div>
 
-		<!-- Scripts -->
 
 
 	</body>

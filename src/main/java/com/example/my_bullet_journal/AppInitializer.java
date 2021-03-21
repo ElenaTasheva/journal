@@ -12,13 +12,17 @@ public class AppInitializer implements CommandLineRunner {
     private final RoleService roleService;
     private final TopicService topicService;
     private final UserService userService;
+    private final TaskService taskService;
 
-    public AppInitializer(QuoteService quoteService, RoleService roleService, ExpenseService expenseService, TopicService topicService, UserService userService) {
+
+    public AppInitializer(QuoteService quoteService, RoleService roleService, TopicService topicService, UserService userService, TaskService taskService) {
         this.quoteService = quoteService;
         this.roleService = roleService;
 
         this.topicService = topicService;
         this.userService = userService;
+
+        this.taskService = taskService;
     }
 
 
@@ -31,12 +35,17 @@ public class AppInitializer implements CommandLineRunner {
         topicService.seedTopics();
         userService.seedAdmin();
 
+        // changing status if the server was off and the schedule task didnt work
+        //taskService.changeTaskStatusWhenStartingTheApp();
 
-        //todo change the text in the paragrpahs for mistakes (add-expenses, add-income)
-        //todo why the links from the admin panel are not secured and the normal users have access to the url
-        //todo run procedures to check the balance and the status
-        //todo task procedure to check tasks - date
-        //todo fix comment service model
-        //todo try to  fix edit with modelAndView
+
+        //todo change the text in the paragrphs for mistakes (add-expenses, add-income)
+        //todo run procedures to check the balance and the status -- check
+        //todo interceptors
+        //todo ajax
+        //todo manage roles from admin page
+
+
+
     }
 }
