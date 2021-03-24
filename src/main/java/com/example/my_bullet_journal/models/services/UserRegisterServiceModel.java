@@ -10,11 +10,7 @@ public class UserRegisterServiceModel {
     private String username;
     private String email;
     private String password;
-    //private Set<RoleEnum> roles = new HashSet<>();
 
-//    public UserRegisterServiceModel() {
-//        roles.add(RoleEnum.USER);
-//    }
 
     public String getUsername() {
         return username;
@@ -43,12 +39,4 @@ public class UserRegisterServiceModel {
         return this;
     }
 
-//    public Set<RoleEnum> getRoles() {
-//        return roles;
-//    }
-//
-//    public UserRegisterServiceModel setRoles(Set<RoleEnum> roles) {
-//        this.roles = roles;
-//        return this;
-//    }
 }

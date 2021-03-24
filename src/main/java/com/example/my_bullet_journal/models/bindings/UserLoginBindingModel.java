@@ -24,7 +24,7 @@ public class UserLoginBindingModel {
     }
 
     @NotBlank
-    @Size(min = 5, max = 20, message = "Password size must be between 5 and 20 characters")
+    @Size(min = 3, max = 10, message = "Password size must be between 5 and 20 characters")
     public String getPassword() {
         return password;
     }

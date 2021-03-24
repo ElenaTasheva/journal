@@ -19,12 +19,12 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
             <form class="form-inline my-2 my-lg-0">
                 <a th:href="@{/users/login}"
                    sec:authorize="!isAuthenticated()"
-                   id="login" type="submit" class="btn btn-light">Login</a>
+                   id="login" type="submit" class="btn btn-light">Log in</a>
                 &nbsp;&nbsp;&nbsp;
                 <a th:href="@{/users/register}" sec:authorize="!isAuthenticated()" id="register" type="submit" class="btn btn-light">Sign up</a>
                 </form>
                 <form th:method="POST" class="form-inline my-2 my-lg-0" th:action="@{/logout}">
-                    <button type="submit" class="btn btn-light btn-sm" sec:authorize="isAuthenticated()">Logout</button>
+                    <button type="submit" class="btn btn-light btn-sm" sec:authorize="isAuthenticated()">Log out</button>
 
             </form>
         </div>

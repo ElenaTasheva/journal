@@ -25,7 +25,7 @@ spring:
       enabled: true
 
 cloudinary:
- api-key:
+ api-key: 475892765127179
  api-secret:
  cloud-name: dxwfwbxq2
 

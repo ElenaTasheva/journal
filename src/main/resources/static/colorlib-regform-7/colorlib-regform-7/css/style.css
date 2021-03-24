@@ -590,3 +590,7 @@ label.valid {
     margin-bottom: 10px; } }
 
 /*# sourceMappingURL=style.css.map */
+.input-validator:valid {
+  border: mediumseagreen solid 2px;
+}
+

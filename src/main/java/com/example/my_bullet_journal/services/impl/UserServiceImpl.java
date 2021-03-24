@@ -4,6 +4,7 @@ import com.example.my_bullet_journal.models.entities.Role;
 import com.example.my_bullet_journal.models.entities.User;
 import com.example.my_bullet_journal.models.enums.RoleEnum;
 import com.example.my_bullet_journal.models.services.UserRegisterServiceModel;
+import com.example.my_bullet_journal.models.view.UserViewModel;
 import com.example.my_bullet_journal.repositories.UserRepository;
 import com.example.my_bullet_journal.services.RoleService;
 import com.example.my_bullet_journal.services.UserService;
@@ -17,7 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -37,10 +41,7 @@ public class UserServiceImpl implements UserService {
         this.journalDbUserService = journalDbUserService;
     }
 
-    @Override
-    public User getUserByUsername(String username) {
-        return this.userRepository.findByUsername(username).orElseThrow(NullPointerException::new);
-    }
+
 
     @Override
     public void registerAndLogin(UserRegisterServiceModel userRegisterServiceModel) {
@@ -92,7 +93,25 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findByEmail(currentUserEmail).get();
     }
 
+    @Override
+    public List<UserViewModel> findAll() {
+        return this.userRepository.findAll()
+                .stream().map(u -> this.modelMapper.map(u, UserViewModel.class)).collect(Collectors.toList());
+    }
 
+    @Override
+    public User findById(Long id) {
+        return this.userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Override
+    public void makeAdmin(Long id) {
+
+        User user = this.userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        user.getRoles().add(roleService.findByRow(RoleEnum.ADMIN).get());
+        userRepository.save(user);
+
+    }
 
 
 }

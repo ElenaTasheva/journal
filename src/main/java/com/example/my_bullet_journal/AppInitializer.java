@@ -44,8 +44,9 @@ public class AppInitializer implements CommandLineRunner {
         //todo interceptors
         //todo ajax
         //todo manage roles from admin page
+        //todo add search bar to find a user and manage the roles
+        
 
-
-
+    
     }
 }

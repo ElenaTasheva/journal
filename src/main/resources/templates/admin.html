@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <th:block th:include="~{fragments/head-forms}"></th:block>
 <body>
 <th:block th:include="~{fragments/nav}"></th:block>
 <div class="main" style="padding-left: 60px; padding-top: 70px;">
     <section class="sign-in">
             <div style="display:inline-block; width:50%;text-align:center;">
-                <h5 style="display: flex">New Quote</h5>
+                <h5 style="display: flex;">New Quote</h5>
             <form th:method="POST" th:action="@{quotes/add}" th:object="${quoteBindingModel}" style="width: 50%; margin-top: 25px">
                 <input th:field = "*{author}" th:errorclass = "bg-warning" type="text" class="form-control"  placeholder="Author Name" style="border-color: lightpink">
                 <small th:if="${#fields.hasErrors('author')}" th:errors = "*{author}"></small>
                 <br>
-                <textarea th:field = "*{text}"  th:errorclass = "bg-warning" placeholder="Quote text" class="form-control"  >
-                    <small th:if="${#fields.hasErrors('text')}" th:errors = "*{text}"></small>
+                <textarea th:field="*{text}" th:errorclass="is-invalid" placeholder="Quote text" class="form-control"  >
+                    <small id="descriptionError" class="invalid-feedback form-text bg-danger rounded">The field can not be empty</small>
                     <h5 th:if="${success}" th:text="Successfully added quote"></h5>
                 </textarea>
                 <button  type="submit"  class="btn btn-primary btn-sm btn btn-outline-light" style="background-color: beige">Add Quote</button>
@@ -24,15 +25,27 @@
                       enctype="multipart/form-data" style="width: 50%; margin-top: 25px">
                         <input type="file" class="form-control-file" id="add-title-image" name="img" required="required">
                     <br>
-                    <textarea th:field = "${topicBindingModel.title}"  th:errorclass = "bg-warning" placeholder="Topic header" class="form-control"  >
-                        <small th:if="${#fields.hasErrors('title')}" th:errors = "${topicBindingModel.title}"></small>
+                    <textarea th:field="*{title}" th:errorclass="is-invalid" placeholder="Topic header" class="form-control"  >
+                        <small  class="invalid-feedback form-text bg-danger rounded">The field can not be empty</small>
 
                 </textarea>
                     <button  type="submit"  class="btn btn-primary btn-sm btn btn-outline-light" style="background-color: beige">Add Topic</button>
                 </form>
             </div>
-    </section>
-</div>
+        <h5 style="display: flex; padding-top: 80px">Upgrade user to admin</h5>
 
+        <div style="display:inline-block; width:50%;text-align:center;">
+            <input id="searchInput" class="form-control mr-sm-2 w-50" type="search"
+                   placeholder="Enter user email" aria-label="Search">
+        </div>
+        <div class="row mt-5" id="userList">
+        <div class="col-md-3">
+
+        </div>
+        </div>
+    </section>
+
+</div>
+<script th:src="@{/colorlib-regform-7/colorlib-regform-7/js/load-user.js}"></script>
 </body>
 </html>
