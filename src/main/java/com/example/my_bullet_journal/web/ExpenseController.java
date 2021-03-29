@@ -67,7 +67,7 @@ public class ExpenseController {
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Expenses")
     public String showAll(Model model, @AuthenticationPrincipal UserDetails user){
-        model.addAttribute("expenses", this.expenseService.getAllExpenses(user.getUsername()));
+        model.addAttribute("expenses", this.expenseService.getAllExpensesOrderByCategory(user.getUsername()));
         model.addAttribute("total", this.expenseService.getTotalAmountOfExpenses(user.getUsername()));
         return "expenses";
     }

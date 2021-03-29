@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,4 +29,10 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
                     "GROUP BY category",
             nativeQuery = true)
    List<Object[]> finExpensesByCategories(Long userId);
+
+    @Query(value = "UPDATE Expense e SET e.status = 'COMPLETED' " +
+            "WHERE e.addedOn < :date AND i.status = 'ACTIVE'",
+            nativeQuery = true)
+    void changeMonthlyStatus(LocalDate date);
 }
+

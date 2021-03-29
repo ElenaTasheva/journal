@@ -63,19 +63,21 @@ public class TaskServiceImpl implements TaskService {
             task.get().setStatus(StatusEnum.COMPLETED);
             this.taskRepository.save(task.get());
         }
+        else throw new IllegalArgumentException(String.format("Task with id - %s does not exist",id));
     }
 
     @Override
     public TaskServiceModel findById(long taskId) {
-        //todo deal with the optional
-        return this.modelMapper.map(this.taskRepository.findById(taskId).get(), TaskServiceModel.class);
+        return this.modelMapper.map(this.taskRepository
+                .findById(taskId).orElseThrow(IllegalArgumentException::new), TaskServiceModel.class);
     }
 
     @Override
     public void update(Long id, TaskServiceModel taskServiceModel) {
-        DailyTask task = this.taskRepository.findById(id).orElseThrow(NullPointerException::new);
+        DailyTask task = this.taskRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException((String.format("Task with id - %s does not exist",id))));
         taskServiceModel.setId(id);
-         taskServiceModel.setUser(task.getUser());
+        taskServiceModel.setUser(task.getUser());
         task = this.modelMapper.map(taskServiceModel, DailyTask.class);
         this.taskRepository.save(task);
 
@@ -92,7 +94,7 @@ public class TaskServiceImpl implements TaskService {
 
     }
 
-    // checxking what has been expiried when starting the app
+    // checking what has been expired when starting the app
 
    // @PostConstruct
     public void changeTaskStatusWhenStartingTheApp() {

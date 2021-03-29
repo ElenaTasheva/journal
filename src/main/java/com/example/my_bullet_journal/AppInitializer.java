@@ -41,11 +41,10 @@ public class AppInitializer implements CommandLineRunner {
 
         //todo change the text in the paragrphs for mistakes (add-expenses, add-income)
         //todo run procedures to check the balance and the status -- check
-        //todo interceptors
-        //todo ajax
-        //todo manage roles from admin page
-        //todo add search bar to find a user and manage the roles
-        
+        //todo make custom Exception "resource not found";
+        //todo add frontEnd\validation with registerForm
+        //todo do aop for the errors - IllegalArgumentException
+
 
     
     }

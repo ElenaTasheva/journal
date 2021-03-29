@@ -20,6 +20,11 @@ public class Quote extends BaseEntity {
         this.author = author;
     }
 
+    public Quote(String text) {
+        this.text = text;
+    }
+    
+
     @Column(unique = true)
     public String getText() {
         return text;

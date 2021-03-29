@@ -14,9 +14,9 @@ public interface IncomeService {
 
     void save(IncomeServiceModel incomeServiceModel, String userEmail);
 
-    List<IncomeViewModel> getAllIncome(String email);
+    List<IncomeViewModel> getAllIncomesOrderByCategory(String email);
 
     BigDecimal getTotalIncome(String email);
 
-    HashMap<String, BigDecimal> incomeByCategory(Long userId);
+    HashMap<String, BigDecimal> incomeSumByCategory(Long userId);
 }

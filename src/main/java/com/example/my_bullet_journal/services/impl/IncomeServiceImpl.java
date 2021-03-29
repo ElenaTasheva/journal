@@ -3,7 +3,6 @@ package com.example.my_bullet_journal.services.impl;
 import com.example.my_bullet_journal.models.entities.Income;
 import com.example.my_bullet_journal.models.entities.User;
 import com.example.my_bullet_journal.models.enums.IncomeEnum;
-import com.example.my_bullet_journal.models.enums.StatusEnum;
 import com.example.my_bullet_journal.models.services.IncomeServiceModel;
 import com.example.my_bullet_journal.models.view.IncomeViewModel;
 import com.example.my_bullet_journal.repositories.IncomeRepository;
@@ -27,14 +26,12 @@ public class IncomeServiceImpl implements IncomeService {
     private final IncomeRepository incomeRepository;
     private final ModelMapper modelMapper;
     private final UserService userService;
-    private final JournalDbUserService journalDbUserService;
 
 
-    public IncomeServiceImpl(IncomeRepository incomeRepository, ModelMapper modelMapper, UserService userService, JournalDbUserService journalDbUserService) {
+    public IncomeServiceImpl(IncomeRepository incomeRepository, ModelMapper modelMapper, UserService userService) {
         this.incomeRepository = incomeRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
-        this.journalDbUserService = journalDbUserService;
     }
 
     @Override
@@ -52,7 +49,7 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
-    public List<IncomeViewModel> getAllIncome(String email) {
+    public List<IncomeViewModel> getAllIncomesOrderByCategory (String email) {
         Long userId = this.userService.findByEmail(email).getId();
         return this.incomeRepository.findAllAndOrderByCategory(userId)
                 .stream().map(income -> this.modelMapper.map(income,IncomeViewModel.class))
@@ -67,9 +64,9 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
-    public HashMap<String, BigDecimal> incomeByCategory(Long userId) {
+    public HashMap<String, BigDecimal> incomeSumByCategory(Long userId) {
         HashMap<String, BigDecimal> result = new HashMap<>();
-            List<Object[]> list = this.incomeRepository.findIncomeByCategory(userId);
+            List<Object[]> list = this.incomeRepository.sumIncomeByCategory(userId);
             for (Object[] ob: list) {
                 String key = (String)ob[0];
                 BigDecimal value = (BigDecimal) ob[1];
@@ -80,10 +77,9 @@ public class IncomeServiceImpl implements IncomeService {
         }
 
 
-
         // completing the month and starting next month from 0
     @Scheduled(cron = "0 0 0 1 * *")
-    private void changeTaskStatus() {
+    private void changeIncomeStatusToCompleted() {
         this.incomeRepository.changeMonthlyStatus(LocalDate.now());
 
     }

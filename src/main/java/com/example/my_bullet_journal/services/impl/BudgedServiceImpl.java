@@ -31,16 +31,16 @@ public class BudgedServiceImpl implements BudgetService {
     @Override
     public HashMap<String, BigDecimal> getExpensesList(String email) {
         Long userId = this.userService.findByEmail(email).getId();
-        budgetServiceModel.setExpensesCategory(this.expenseService.expensesByCategory(userId));
-        checkIfAllEmpty(budgetServiceModel.getExpensesCategory());
+        budgetServiceModel.setExpensesCategory(this.expenseService.expenseSumByCategory(userId));
+        addingNoDataParamIfTheSetIsEmpty(budgetServiceModel.getExpensesCategory());
         setAllCategories();
         setTotalSums(email);
 
         return budgetServiceModel.getExpensesCategory();
     }
 
-    // if there is no data in income or expenses
-    private void checkIfAllEmpty(HashMap<String, BigDecimal> map) {
+    // if there is no data in income or expenses in order charts to be visible adding "No Data" parameter
+    private void addingNoDataParamIfTheSetIsEmpty(HashMap<String, BigDecimal> map) {
         if(map.size() == 0){
             map.put("NO DATA", BigDecimal.valueOf(100));
         }
@@ -53,8 +53,8 @@ public class BudgedServiceImpl implements BudgetService {
     @Override
     public HashMap<String, BigDecimal> getIncomeList(String email) {
         Long userId = this.userService.findByEmail(email).getId();
-        budgetServiceModel.setIncomeCategory(this.incomeService.incomeByCategory(userId));
-        checkIfAllEmpty(budgetServiceModel.getIncomeCategory());
+        budgetServiceModel.setIncomeCategory(this.incomeService.incomeSumByCategory(userId));
+        addingNoDataParamIfTheSetIsEmpty(budgetServiceModel.getIncomeCategory());
         setAllCategoriesIncome(email);
 
         return budgetServiceModel.getIncomeCategory();
@@ -67,17 +67,14 @@ public class BudgedServiceImpl implements BudgetService {
 
     @Override
     public BigDecimal getExpensesSum() {
-        return this.budgetServiceModel.getSumExpenses();
+        return this.budgetServiceModel.getSumExpenses() != null ? this.budgetServiceModel.getSumExpenses() : BigDecimal.valueOf(0) ;
     }
 
     @Override
     public BigDecimal getBalance() {
-        try{
+
             return getIncomeSum().subtract(getExpensesSum());
-        }
-        catch (NullPointerException ex){
-            return BigDecimal.valueOf(0);
-        }
+
     }
 
     private void setAllCategoriesIncome(String email) {

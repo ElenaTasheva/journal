@@ -1,7 +1,6 @@
 package com.example.my_bullet_journal.services;
 
 import com.example.my_bullet_journal.models.bindings.CommentBindingModel;
-import com.example.my_bullet_journal.models.services.TopicServiceModel;
 import com.example.my_bullet_journal.models.view.CommentViewModel;
 import org.apache.http.HttpException;
 

@@ -10,9 +10,11 @@ import com.example.my_bullet_journal.repositories.ExpenseRepository;
 import com.example.my_bullet_journal.services.ExpenseService;
 import com.example.my_bullet_journal.services.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +50,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<ExpenseViewModel> getAllExpenses(String email) {
+    public List<ExpenseViewModel> getAllExpensesOrderByCategory(String email) {
         Long userId = getUserId(email);
        return this.expenseRepository.findAllAndOrderByCategory(userId)
                 .stream()
@@ -66,7 +68,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
 
     @Override
-    public HashMap<String, BigDecimal> expensesByCategory(Long userId) {
+    public HashMap<String, BigDecimal> expenseSumByCategory(Long userId) {
         HashMap<String, BigDecimal> result = new HashMap<>();
         List<Object[]> list = this.expenseRepository.finExpensesByCategories(userId);
         for (Object[] ob: list) {
@@ -81,5 +83,11 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     private Long getUserId(String email) {
         return  this.userService.findByEmail(email).getId();
+    }
+
+    @Scheduled(cron = "0 0 0 1 * *")
+    private void changeExpenseStatusToCompleted() {
+        this.expenseRepository.changeMonthlyStatus(LocalDate.now());
+
     }
 }

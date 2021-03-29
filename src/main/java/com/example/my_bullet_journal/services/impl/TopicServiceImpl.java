@@ -37,29 +37,32 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public List<TopicViewModel> getAllTopics() {
-        return this.topicRepository.findAll()
+        List<TopicViewModel> topics = this.topicRepository.findAll()
                 .stream().map(topic -> {
                     return  this.modelMapper.map(topic, TopicViewModel.class);
                 }).collect(Collectors.toList());
+       if(topics.size() > 0){
+           return  topics;
+       }
+       throw  new IllegalArgumentException("There are no topics to be shown");
     }
 
 
 
     @Override
     public Topic findByName(String name) {
-        return this.topicRepository.findByTitle(name).orElseThrow(IllegalArgumentException::new);
+        return this.topicRepository.findByTitle(name).orElseThrow(() -> new IllegalArgumentException("The topic you are looking for does not exist"));
     }
 
     @Override
     public TopicServiceModel getTopicById(Long id) {
-        Topic topic = this.topicRepository.findById(id).orElseThrow(NullPointerException::new);
+        Topic topic = this.topicRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("There is no topic with such id"));
         return this.modelMapper.map(topic, TopicServiceModel.class);
     }
 
     @Override
     public Topic findByid(Long id) {
-        //todo handle the exceptions
-        return this.topicRepository.findById(id).orElseThrow(NullPointerException::new);
+        return this.topicRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("There is no topic with such id"));
     }
 
     @Override
@@ -82,7 +85,6 @@ public class TopicServiceImpl implements TopicService {
     public void save(TopicBindingModel topicBindingmodel) throws IOException {
         if(this.topicRepository.findByTitle(topicBindingmodel.getTitle()).isPresent()){
             throw new IllegalArgumentException("Topic already exist");
-            //todo Make a custom Exception
         }
         else{
             MultipartFile img = topicBindingmodel.getImg();

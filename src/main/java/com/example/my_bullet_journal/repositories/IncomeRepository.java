@@ -28,7 +28,7 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
                     "FROM income WHERE user_id = :id AND status = 'ACTIVE' " +
                     "GROUP BY category",
             nativeQuery = true)
-    List<Object[]> findIncomeByCategory(Long id);
+    List<Object[]> sumIncomeByCategory(Long id);
 
 
     @Query(value = "UPDATE Income i SET i.status = 'COMPLETED' " +

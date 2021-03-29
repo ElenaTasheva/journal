@@ -34,7 +34,7 @@ public class QuoteServiceImpl implements QuoteService {
 
 
     @Override
-    public void save() throws IOException {
+    public void save() throws IOException{
         if(quoteRepository.count()==0) {
             List<String> tokens = new ArrayList<>(Files.readAllLines(Path.of(PATH)));
             for (String token : tokens) {
@@ -52,7 +52,7 @@ public class QuoteServiceImpl implements QuoteService {
     }
 
     @Override
-    public QuoteViewModel getRandomQuote() {
+    public QuoteViewModel getRandomQuote(){
         if(quote == null){
             setQuote();
         }
@@ -68,9 +68,13 @@ public class QuoteServiceImpl implements QuoteService {
     }
 
     private Quote getRandom() {
+        if(quoteRepository.count() == 0){
+            return new Quote("...", "...");
+        }
         Random random = new Random();
         List<Quote> quotes = this.quoteRepository.findAll();
         int index =  random.nextInt(quotes.size() - 1) + 1;
+        System.out.println();
         return quotes.get(index);
     }
 }

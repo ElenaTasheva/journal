@@ -16,11 +16,11 @@ public interface ExpenseService {
     void save(ExpenseServiceModel map, String userEmail);
 
     //todo fix it to service model
-    List<ExpenseViewModel> getAllExpenses(String email);
+    List<ExpenseViewModel> getAllExpensesOrderByCategory(String email);
 
     BigDecimal getTotalAmountOfExpenses(String email);
 
-    HashMap<String, BigDecimal> expensesByCategory(Long userId);
+    HashMap<String, BigDecimal> expenseSumByCategory(Long userId);
 
 
 }

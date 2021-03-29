@@ -65,7 +65,7 @@ public class IncomeController {
     @GetMapping("/all")
     @PreAuthorize("isAuthenticated()")
     public String showAll(Model model, @AuthenticationPrincipal UserDetails user){
-        model.addAttribute("income", this.incomeService.getAllIncome(user.getUsername()));
+        model.addAttribute("income", this.incomeService.getAllIncomesOrderByCategory(user.getUsername()));
         model.addAttribute("total", this.incomeService.getTotalIncome(user.getUsername()));
         return "income";
     }
