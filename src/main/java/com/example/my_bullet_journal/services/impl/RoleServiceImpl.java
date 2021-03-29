@@ -8,7 +8,6 @@ import com.example.my_bullet_journal.services.RoleService;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,13 +21,16 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void seedRoles() {
+    public String seedRoles() {
         if(this.roleRepository.count()==0){
             Arrays.stream(RoleEnum.values()).forEach(roleEnum -> {
                 Role role = new Role(roleEnum);
                 roleRepository.save(role);
             });
+            return "Roles seeded successfully" ;
+
         }
+        return "Roles has been seeded already";
     }
 
     @Override

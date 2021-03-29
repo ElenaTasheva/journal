@@ -47,17 +47,16 @@ public class UserServiceImpl implements UserService {
     public void registerAndLogin(UserRegisterServiceModel userRegisterServiceModel) {
         User user = modelMapper.map(userRegisterServiceModel, User.class);
 
-
-        if(userRepository.findByEmail(userRegisterServiceModel.getEmail()).isPresent()){
-            throw  new IllegalArgumentException("This email is already registered");
+        Optional<User> existingUser = userRepository.findByEmail(userRegisterServiceModel.getEmail());
+        if(existingUser.isPresent()){
+            throw new IllegalArgumentException("This email is already registered");
         }
-
             user.setPassword(passwordEncoder.encode(userRegisterServiceModel.getPassword()));
 
 
         Role userRole =  roleService.findByRow(RoleEnum.USER)
                 .orElseThrow(
-                        () -> new IllegalStateException("USER role not found. Please seed the roles."));
+                        () -> new IllegalArgumentException("USER role not found. Please seed the roles."));
 
         user.setRoles(Set.of(userRole));
         user = userRepository.save(user);
@@ -81,8 +80,12 @@ public class UserServiceImpl implements UserService {
         user.setEmail("admin@gmail.com")
                 .setUsername("admin")
                 .setPassword(this.passwordEncoder.encode("admin"));
-        Role userRole = roleService.findByRow(RoleEnum.USER).get();
-        Role adminRole = roleService.findByRow(RoleEnum.ADMIN).get();
+        Role userRole = roleService.findByRow(RoleEnum.USER).orElseThrow(
+                () -> new IllegalArgumentException("USER role not found. Please seed the roles."));
+            ;
+        Role adminRole = roleService.findByRow(RoleEnum.ADMIN).orElseThrow(
+                    () -> new IllegalArgumentException("Admin role not found. Please seed the roles."));
+            ;
         user.setRoles(Set.of(userRole, adminRole));
         userRepository.save(user);
     }

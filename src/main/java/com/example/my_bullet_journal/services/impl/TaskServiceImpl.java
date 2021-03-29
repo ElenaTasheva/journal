@@ -85,7 +85,7 @@ public class TaskServiceImpl implements TaskService {
 
 //checking if tasks in the past are not completed and mark them as expired
     @Scheduled(cron = "0 0 0 * * *")
-    private void changeTaskStatus() {
+    protected void changeTaskStatus() {
         this.taskRepository.findAllTaskThatAreExpired(LocalDate.now())
                 .forEach(t -> {
                     t.setStatus(StatusEnum.EXPIRED);

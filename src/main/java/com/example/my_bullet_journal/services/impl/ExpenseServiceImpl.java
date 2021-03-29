@@ -86,7 +86,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Scheduled(cron = "0 0 0 1 * *")
-    private void changeExpenseStatusToCompleted() {
+    protected void changeExpenseStatusToCompleted() {
         this.expenseRepository.changeMonthlyStatus(LocalDate.now());
 
     }

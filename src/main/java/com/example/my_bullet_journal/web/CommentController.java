@@ -12,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-
 @Controller
 @RequestMapping("/topics")
 public class CommentController {
@@ -42,13 +40,13 @@ public class CommentController {
     @PreAuthorize("isAuthenticated()")
     public String addComment(@PathVariable Long id, CommentBindingModel commentBindingModel,
                              @AuthenticationPrincipal UserDetails user) {
-        this.commentService.addCommentToToppic(id, commentBindingModel,user.getUsername());
+        this.commentService.addCommentToTopic(id, commentBindingModel,user.getUsername());
         return "redirect:" +  id;
     }
 
 
     @DeleteMapping("/comments/{topicId}/delete/{commentId}")
-    public String delete(@PathVariable long topicId, @PathVariable long commentId) throws HttpException {
+    public String delete(@PathVariable long topicId, @PathVariable long commentId) {
         commentService.delete(commentId);
         return "redirect:/topics/comments/" +  topicId;
     }

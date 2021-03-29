@@ -9,7 +9,6 @@ import com.example.my_bullet_journal.repositories.CommentRepository;
 import com.example.my_bullet_journal.services.CommentService;
 import com.example.my_bullet_journal.services.TopicService;
 import com.example.my_bullet_journal.services.UserService;
-import org.apache.http.HttpException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -44,13 +43,11 @@ public class CommentServiceImpl implements CommentService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public Long getCommentIdByName(String name) {
-        return this.commentRepository.getIdByName(name);
-    }
 
+
+    //adding comment regarding certain Topic
     @Override
-    public void addCommentToToppic(Long id, CommentBindingModel commentBindingModel, String userEmail) {
+    public void addCommentToTopic(Long id, CommentBindingModel commentBindingModel, String userEmail) {
         User user = this.userService.findByEmail(userEmail);
         Topic topic = this.topicService.findByid(id);
         Comment comment = this.modelMapper.map(commentBindingModel, Comment.class);
@@ -61,8 +58,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void delete(long commentId) throws HttpException {
-       Comment comment = this.commentRepository.findById(commentId).orElseThrow(HttpException::new);
+    public void delete(long commentId) {
+       Comment comment = this.commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("Comment with given id can not be found"));
        this.commentRepository.delete(comment);
     }
 }

@@ -79,7 +79,7 @@ public class IncomeServiceImpl implements IncomeService {
 
         // completing the month and starting next month from 0
     @Scheduled(cron = "0 0 0 1 * *")
-    private void changeIncomeStatusToCompleted() {
+    protected void changeIncomeStatusToCompleted() {
         this.incomeRepository.changeMonthlyStatus(LocalDate.now());
 
     }

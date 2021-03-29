@@ -19,6 +19,7 @@ public class Comment extends BaseEntity{
     }
 
     @ManyToOne
+    @NotNull
     public User getUser() {
         return user;
     }
@@ -29,6 +30,7 @@ public class Comment extends BaseEntity{
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @NotNull
     public Topic getTopic() {
         return topic;
     }

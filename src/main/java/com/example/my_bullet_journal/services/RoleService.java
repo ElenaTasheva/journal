@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface RoleService {
 
-    void seedRoles();
+    String seedRoles();
     Optional<Role> findByRow(RoleEnum roleEnum);
 }

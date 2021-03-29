@@ -32,7 +32,7 @@ public class AppInitializer implements CommandLineRunner {
 
         quoteService.save();
         roleService.seedRoles();
-        topicService.seedTopics();
+        //topicService.seedTopics();
         userService.seedAdmin();
 
         // changing status if the server was off and the schedule task didnt work
@@ -43,8 +43,7 @@ public class AppInitializer implements CommandLineRunner {
         //todo run procedures to check the balance and the status -- check
         //todo make custom Exception "resource not found";
         //todo add frontEnd\validation with registerForm
-        //todo do aop for the errors - IllegalArgumentException
-
+        //todo fix pageTitle
 
     
     }
