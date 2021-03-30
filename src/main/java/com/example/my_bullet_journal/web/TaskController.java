@@ -73,10 +73,11 @@ public class TaskController {
 
 
     @DeleteMapping("/delete/{taskId}")
-    public String delete(@PathVariable long taskId) {
+    public String changeTaskStatusToCompleted(@PathVariable long taskId) {
         taskService.changeStatusToCompleted(taskId);
         return "redirect:/tasks/all";
     }
+
 
 
 

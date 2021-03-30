@@ -32,7 +32,7 @@ public class AppInitializer implements CommandLineRunner {
 
         quoteService.save();
         roleService.seedRoles();
-        //topicService.seedTopics();
+        topicService.seedTopics();
         userService.seedAdmin();
 
         // changing status if the server was off and the schedule task didnt work
