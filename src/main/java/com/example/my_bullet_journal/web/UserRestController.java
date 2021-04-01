@@ -19,11 +19,13 @@ public class UserRestController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<List<UserViewModel>> findAll() {
+    public ResponseEntity<List<UserViewModel>> findAllWithRoleUser() {
         return ResponseEntity
                 .ok()
-                .body(userService.findAll());
+                .body(userService.findAllWithRoleUser());
     }
+
+
 
 
 

@@ -1,5 +1,7 @@
 package com.example.my_bullet_journal.web;
 
+import com.example.my_bullet_journal.models.bindings.TaskBindingModel;
+import com.example.my_bullet_journal.models.entities.DailyTask;
 import com.example.my_bullet_journal.models.entities.Role;
 import com.example.my_bullet_journal.models.entities.User;
 import com.example.my_bullet_journal.models.enums.DailyCategoryEnum;
@@ -21,6 +23,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import scala.collection.parallel.Task;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -40,7 +43,7 @@ public class TaskControllerTest {
     @Autowired
     private TaskService taskService;
 
-
+    private ModelMapper modelMapper = new ModelMapper();
 
 
     @Autowired
@@ -49,7 +52,7 @@ public class TaskControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN", "USER"})
     public void changeTaskStatusToCompletedById() throws Exception {
-        if(taskRepository.count() == 0) {
+        if (taskRepository.count() == 0) {
             taskService.save(new TaskServiceModel().setCategory(DailyCategoryEnum.CHORES).setDueOn(LocalDate.now()), "admin@gmail.com");
         }
         taskService.findById(1).setStatus(StatusEnum.INPROGRESS);
@@ -67,6 +70,21 @@ public class TaskControllerTest {
                 .andExpect(model().attributeExists("taskBindingModel", "categories"));
     }
 
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER"})
+    public void editTaskActionDoesRedirectAndChangeTask() throws Exception {
+        this.mockMvc.perform(post("/tasks/edit/{id}", 1).with(csrf()))
+                .andExpect(status().is3xxRedirection());
+        TaskBindingModel taskBindingModel
+                = this.modelMapper.map(this.taskRepository.findById((long) 1).get(), TaskBindingModel.class);
+        Assert.assertEquals(DailyCategoryEnum.CHORES, taskBindingModel.getCategory());
+        taskBindingModel.setCategory(DailyCategoryEnum.FAMILY);
+        taskService.update((long) 1, this.modelMapper.map(taskBindingModel, TaskServiceModel.class));
+        Assert.assertEquals(DailyCategoryEnum.FAMILY, taskRepository.findById((long) 1).get().getCategory());
+        // changing the status to the original so another test can be run;
+        DailyTask task = taskRepository.findById((long) 1).get();
+        task.setCategory(DailyCategoryEnum.CHORES);
+        taskRepository.save(task);
 
-
+    }
 }

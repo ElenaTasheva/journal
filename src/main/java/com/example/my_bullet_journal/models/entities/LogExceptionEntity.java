@@ -26,7 +26,7 @@ public class LogExceptionEntity extends BaseEntity{
         return this;
     }
 
-    @Column(name = "error_message")
+    @Column(name = "error_message", columnDefinition = "TEXT")
     public String getMessage() {
         return message;
     }

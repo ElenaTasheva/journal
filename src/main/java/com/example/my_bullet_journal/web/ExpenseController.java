@@ -33,8 +33,6 @@ public class ExpenseController {
     @GetMapping("/add")
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Expenses - add")
-
-
     public String showAdd(Model model){
         if(!model.containsAttribute("expenseBindingModel")){
             model.addAttribute("expenseBindingModel", new ExpenseBindingModel());
@@ -65,7 +63,7 @@ public class ExpenseController {
 
     @GetMapping("/all")
     @PreAuthorize("isAuthenticated()")
-    @PageTitle("Expenses")
+    @PageTitle("My Expenses")
     public String showAll(Model model, @AuthenticationPrincipal UserDetails user){
         model.addAttribute("expenses", this.expenseService.getAllExpensesOrderByCategory(user.getUsername()));
         model.addAttribute("total", this.expenseService.getTotalAmountOfExpenses(user.getUsername()));

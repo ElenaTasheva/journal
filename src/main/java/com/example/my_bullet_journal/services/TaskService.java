@@ -21,4 +21,6 @@ public interface TaskService {
     void update(Long id, TaskServiceModel taskServiceModel);
 
     void changeTaskStatusWhenStartingTheApp();
+
+    void seedTestTask();
 }

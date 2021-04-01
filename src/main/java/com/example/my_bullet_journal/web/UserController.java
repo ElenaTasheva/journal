@@ -6,6 +6,7 @@ import com.example.my_bullet_journal.models.bindings.UserRegisterBindingModel;
 import com.example.my_bullet_journal.models.entities.User;
 import com.example.my_bullet_journal.models.services.UserRegisterServiceModel;
 import com.example.my_bullet_journal.services.UserService;
+import com.example.my_bullet_journal.web.annotations.PageTitle;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -33,6 +34,7 @@ public class UserController {
 
 
     @GetMapping("/login")
+    @PageTitle("Log in")
     public String showLogin(Model model){
         if(!model.containsAttribute("bad_credentials")){
             model.addAttribute("bad_credentials", false);
@@ -89,6 +91,7 @@ public class UserController {
 
 
     @GetMapping("/register")
+    @PageTitle("Register")
     public String showRegister(Model model){
         if(!model.containsAttribute("userRegisterBindingModel")){
             model.addAttribute("userRegisterBindingModel", new UserRegisterBindingModel());
@@ -100,6 +103,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PageTitle("Admin Panel")
     @GetMapping("/roles/update/{id}")
     public String makeAdmin(@PathVariable Long id, Model model) {
         if(!model.containsAttribute("topicBindingModel")){

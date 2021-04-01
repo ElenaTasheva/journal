@@ -3,6 +3,7 @@ package com.example.my_bullet_journal.services.impl;
 
 import com.example.my_bullet_journal.models.entities.Expense;
 import com.example.my_bullet_journal.models.entities.User;
+import com.example.my_bullet_journal.models.enums.BudgetStatusEnum;
 import com.example.my_bullet_journal.models.enums.ExpenseEnum;
 import com.example.my_bullet_journal.models.services.ExpenseServiceModel;
 import com.example.my_bullet_journal.models.view.ExpenseViewModel;
@@ -35,8 +36,8 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<ExpenseEnum> getCategories(){
-       return Arrays.stream(ExpenseEnum.values()).collect(Collectors.toList());
+    public List<ExpenseEnum> getCategories() {
+        return Arrays.stream(ExpenseEnum.values()).collect(Collectors.toList());
     }
 
     @Override
@@ -52,7 +53,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public List<ExpenseViewModel> getAllExpensesOrderByCategory(String email) {
         Long userId = getUserId(email);
-       return this.expenseRepository.findAllAndOrderByCategory(userId)
+        return this.expenseRepository.findAllAndOrderByCategory(userId)
                 .stream()
                 .map(expense -> this.modelMapper.map(expense, ExpenseViewModel.class))
                 .collect(Collectors.toList());
@@ -61,33 +62,39 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public BigDecimal getTotalAmountOfExpenses(String email) {
-       Long userId = getUserId(email);
-       return this.expenseRepository.getTotal(userId) != null ? this.expenseRepository.getTotal(userId) : BigDecimal.valueOf(0) ;
+        Long userId = getUserId(email);
+        return this.expenseRepository.getTotal(userId) != null ? this.expenseRepository.getTotal(userId) : BigDecimal.valueOf(0);
     }
-
 
 
     @Override
     public HashMap<String, BigDecimal> expenseSumByCategory(Long userId) {
         HashMap<String, BigDecimal> result = new HashMap<>();
         List<Object[]> list = this.expenseRepository.finExpensesByCategories(userId);
-        for (Object[] ob: list) {
-            String key = (String)ob[0];
+        for (Object[] ob : list) {
+            String key = (String) ob[0];
             BigDecimal value = (BigDecimal) ob[1];
             result.put(key, value);
-            
+
         }
         return result;
     }
 
 
+
+
     private Long getUserId(String email) {
-        return  this.userService.findByEmail(email).getId();
+        return this.userService.findByEmail(email).getId();
     }
 
     @Scheduled(cron = "0 0 0 1 * *")
     protected void changeExpenseStatusToCompleted() {
-        this.expenseRepository.changeMonthlyStatus(LocalDate.now());
+        expenseRepository.changeStatusToCompleted(LocalDate.now())
+        .forEach(expense -> {
+            expense.setStatus(BudgetStatusEnum.COMPLETED);
+            expenseRepository.save(expense);
+        });
 
     }
 }
+

@@ -6,7 +6,9 @@
 <body>
 <th:block th:include="~{fragments/nav}"></th:block>
 <div class="main-div">
-    <button  type="button"  class="btn btn-primary btn-sm btn btn-outline-light" id="add" >Add task</button>
+    <form th:action="@{/tasks/add}">
+    <button class="btn btn-primary btn-sm btn btn-outline-light" id="add" >Add task</button>
+    </form>
     <div th:if="${noTaskFound}">
         <h3 id="task-empty" >There are no tasks to be shown.</h3>
     </div>
@@ -33,9 +35,6 @@
     </ul>
 </div>
 </body>
-<script type="text/javascript">
-    document.getElementById("add").onclick = function () {
-        window.location.replace("http://localhost:8080/tasks/add");    };
-</script>
+
 <th:block th:include="~{fragments/footer}"></th:block>
 </html>

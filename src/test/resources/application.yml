@@ -24,10 +24,10 @@ spring:
       max-request-size: 5MB
       enabled: true
 cloudinary:
-  api-key:
-  api-secret:
+  api-key: 475892765127179
+  api-secret: blabla
   cloud-name: dxwfwbxq2
 social:
   facebook:
     appId: 896588447843613
-    appSecret:
+    appSecret: blabla

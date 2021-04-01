@@ -3,6 +3,7 @@ package com.example.my_bullet_journal.web;
 
 import com.example.my_bullet_journal.models.bindings.TopicBindingModel;
 import com.example.my_bullet_journal.services.TopicService;
+import com.example.my_bullet_journal.web.annotations.PageTitle;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,7 @@ public class TopicController {
 
     @GetMapping("/all")
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Topics")
     public String showAll(Model model){
 
         model.addAttribute("topics", topicService.getAllTopics());

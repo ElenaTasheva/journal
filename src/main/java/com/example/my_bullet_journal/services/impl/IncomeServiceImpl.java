@@ -2,6 +2,7 @@ package com.example.my_bullet_journal.services.impl;
 
 import com.example.my_bullet_journal.models.entities.Income;
 import com.example.my_bullet_journal.models.entities.User;
+import com.example.my_bullet_journal.models.enums.BudgetStatusEnum;
 import com.example.my_bullet_journal.models.enums.IncomeEnum;
 import com.example.my_bullet_journal.models.services.IncomeServiceModel;
 import com.example.my_bullet_journal.models.view.IncomeViewModel;
@@ -78,11 +79,15 @@ public class IncomeServiceImpl implements IncomeService {
 
 
         // completing the month and starting next month from 0
-    @Scheduled(cron = "0 0 0 1 * *")
-    protected void changeIncomeStatusToCompleted() {
-        this.incomeRepository.changeMonthlyStatus(LocalDate.now());
+        @Scheduled(cron = "0 0 0 1 * *")
+        protected void changeIncomeStatusToCompleted() {
+            incomeRepository.changeMonthlyStatus(LocalDate.now())
+                    .forEach(income -> {
+                        income.setStatus(BudgetStatusEnum.COMPLETED);
+                        incomeRepository.save(income);
+                    });
 
-    }
+        }
 
 
 }

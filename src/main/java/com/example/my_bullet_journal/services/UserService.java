@@ -16,9 +16,10 @@ public interface UserService {
 
     User findByEmail(String currentUserEmail);
 
-    List<UserViewModel> findAll();
 
     User findById(Long id);
 
     void makeAdmin(Long id);
+
+    List<UserViewModel> findAllWithRoleUser();
 }

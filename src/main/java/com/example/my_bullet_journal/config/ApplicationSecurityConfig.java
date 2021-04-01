@@ -1,6 +1,7 @@
 package com.example.my_bullet_journal.config;
 
 
+import com.example.my_bullet_journal.repositories.UserRepository;
 import com.example.my_bullet_journal.services.impl.JournalDbUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,11 +28,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JournalDbUserService journalDbUserService;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
 
-    public ApplicationSecurityConfig(JournalDbUserService journalDbUserService, PasswordEncoder passwordEncoder) {
+    public ApplicationSecurityConfig(JournalDbUserService journalDbUserService, PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.journalDbUserService = journalDbUserService;
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
     @Autowired
@@ -98,7 +101,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // http.csrf().disable();
 
-         //todo change the failureLink
     }
 
 

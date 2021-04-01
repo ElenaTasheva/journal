@@ -34,16 +34,14 @@ public class AppInitializer implements CommandLineRunner {
         roleService.seedRoles();
         topicService.seedTopics();
         userService.seedAdmin();
+        taskService.seedTestTask();
 
-        // changing status if the server was off and the schedule task didnt work
-        //taskService.changeTaskStatusWhenStartingTheApp();
+
+       //  changing status if the server was off and the schedule task didnt work
+        taskService.changeTaskStatusWhenStartingTheApp();
 
 
         //todo change the text in the paragrphs for mistakes (add-expenses, add-income)
-        //todo run procedures to check the balance and the status -- check
-        //todo make custom Exception "resource not found";
-        //todo add frontEnd\validation with registerForm
-        //todo fix pageTitle
 
     
     }

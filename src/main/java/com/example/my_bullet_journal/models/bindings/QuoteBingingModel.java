@@ -1,5 +1,6 @@
 package com.example.my_bullet_journal.models.bindings;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 public class QuoteBingingModel {
@@ -10,7 +11,7 @@ public class QuoteBingingModel {
     public QuoteBingingModel() {
     }
 
-    @NotEmpty(message = "Please enter quote")
+    @NotBlank(message = "Please enter quote")
     public String getText() {
         return text;
     }

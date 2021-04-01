@@ -14,10 +14,10 @@
               class="text-light">
                 <div class="form-group">
                     <label id="formGroupExampleInput" for="formGroupExampleInput"></label>
-                    <input th:field = "*{name}" th:errorclass = "bg-danger" id="name-expense" name="name" type="text" class="form-control" placeholder="Task">
-                    <small th:if="${#fields.hasErrors('name')}" th:errors = "*{name}"></small>
+                    <input required th:field = "*{name}" th:errorclass = "bg-danger"  id="name-expense" name="name" type="text" class="form-control" placeholder="Task">
+                    <small th:if="${#fields.hasErrors('name')}" th:errors = "*{name}" class="form-text bg-danger rounded"></small>
                     <label for="exampleFormControlSelect1"></label>
-                    <select th:field="*{category}" th:errorclass = "bg-danger" class="form-control" id="exampleFormControlSelect1">
+                    <select required th:field="*{category}" th:errorclass = "bg-danger"  class="form-control" id="exampleFormControlSelect1">
                         <option value="">Select Category</option>
                         <option
                                 th:each="c: ${categories}"
@@ -26,7 +26,7 @@
                                 th:selected="${c} == *{category}"
                         >
                     </select>
-                    <small th:if="${#fields.hasErrors('category')}" th:errors = "*{category}" class = "text-danger"></small>
+                    <small th:if="${#fields.hasErrors('category')}" th:errors = "*{category}" class="form-text bg-danger rounded"></small>
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlTextarea1"></label>
@@ -35,8 +35,8 @@
             <div class="form-group">
                 <div class="form-group">
                     <label for="releaseDate">Due date</label>
-                    <input th:field="*{dueOn}" th:errorclass = "bg-danger"  name="dueOn" id="releaseDate" type="date" class="form-control" placeholder="Release date">
-                    <small th:if="${#fields.hasErrors('dueOn')}" th:errors = "*{dueOn}" id="releaseDateError" class="form-text bg-danger rounded">Release date cannot be in the
+                    <input required th:field="*{dueOn}" th:errorclass = "bg-danger"  name="dueOn" id="releaseDate" type="date" class="form-control" placeholder="Release date">
+                    <small th:if="${#fields.hasErrors('dueOn')}" th:errors = "*{dueOn}"  class="form-text bg-danger rounded">Release date cannot be in the
                         future</small>
                 </div>
             </div>

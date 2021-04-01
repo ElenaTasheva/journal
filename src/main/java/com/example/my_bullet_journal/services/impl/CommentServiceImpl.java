@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,7 +60,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void delete(long commentId) {
-       Comment comment = this.commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("Comment with given id can not be found"));
-       this.commentRepository.delete(comment);
+       Optional<Comment> comment = this.commentRepository.findById(commentId);
+       if(comment.isEmpty()){
+           throw new IllegalArgumentException("Comment with given id can not be found");
+       }
+       this.commentRepository.delete(comment.get());
     }
 }

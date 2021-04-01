@@ -8,14 +8,13 @@
     <section class="sign-in">
             <div style="display:inline-block; width:50%;text-align:center;">
                 <h5 style="display: flex;">New Quote</h5>
+                <h5 th:if="${success}" th:text="Successfully added quote"></h5>
             <form th:method="POST" th:action="@{quotes/add}" th:object="${quoteBindingModel}" style="width: 50%; margin-top: 25px">
-                <input th:field = "*{author}" th:errorclass = "bg-warning" type="text" class="form-control"  placeholder="Author Name" style="border-color: lightpink">
+                <input th:field = "*{author}" th:errorclass="is-invalid" type="text" class="form-control"  placeholder="Author Name" style="border-color: lightpink">
                 <small th:if="${#fields.hasErrors('author')}" th:errors = "*{author}"></small>
                 <br>
-                <textarea th:field="*{text}" th:errorclass="is-invalid" placeholder="Quote text" class="form-control"  >
+                <textarea required th:field="*{text}" th:errorclass="is-invalid" placeholder="Quote text" class="form-control"></textarea>
                     <small id="descriptionError" class="invalid-feedback form-text bg-danger rounded">The field can not be empty</small>
-                    <h5 th:if="${success}" th:text="Successfully added quote"></h5>
-                </textarea>
                 <button  type="submit"  class="btn btn-primary btn-sm btn btn-outline-light" style="background-color: beige">Add Quote</button>
             </form>
             </div>
@@ -25,10 +24,10 @@
                       enctype="multipart/form-data" style="width: 50%; margin-top: 25px">
                         <input type="file" class="form-control-file" id="add-title-image" name="img" required="required">
                     <br>
-                    <textarea th:field="*{title}" th:errorclass="is-invalid" placeholder="Topic header" class="form-control"  >
+                    <textarea required th:field="*{title}" th:errorclass="is-invalid" placeholder="Topic header" class="form-control"></textarea>
                         <small  class="invalid-feedback form-text bg-danger rounded">The field can not be empty</small>
 
-                </textarea>
+
                     <button  type="submit"  class="btn btn-primary btn-sm btn btn-outline-light" style="background-color: beige">Add Topic</button>
                 </form>
             </div>

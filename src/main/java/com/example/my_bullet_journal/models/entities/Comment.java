@@ -2,6 +2,7 @@ package com.example.my_bullet_journal.models.entities;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -41,6 +42,7 @@ public class Comment extends BaseEntity{
     }
 
     @Column(columnDefinition = "text")
+    @NotEmpty
     @NotNull
     public String getText() {
         return text;

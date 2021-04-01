@@ -17,12 +17,12 @@
                         <h2 class="form-title">Sign up</h2>
                         <form th:action="@{/users/register}" method="POST" th:object="${userRegisterBindingModel}">                            <div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input   th:field = "*{username}" th:errorclass = "bg-danger" type="text" name="username" id="name" class="input-validator" placeholder="Username"/>
+                                <input required minlength="3" maxlength="20"  th:field = "*{username}" th:errorclass = "bg-danger" type="text" name="username" id="name" class="input-validator" placeholder="Username"/>
                             <small th:if="${#fields.hasErrors('username')}" th:errors = "*{username}"></small>
                             </div>
                             <div class="form-group">
                                 <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                <input required minlength="3" maxlength="10" th:field = "*{email}" th:errorclass = "bg-danger" type="email" name="email" id="email" class="input-validator" placeholder="Your Email"/>
+                                <input required  th:field = "*{email}" th:errorclass = "bg-danger" type="email" name="email" id="email" class="input-validator" placeholder="Your Email"/>
                                 <small th:if="${#fields.hasErrors('email')}" th:errors = "*{email}"></small>
                                 <small th:if="${userExistsError}" id="usernameUniqueError"
                                        class="text-light form-text bg-danger rounded">User with this email is already registered</small>
@@ -34,7 +34,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                <input th:field = "*{confirmedPassword}" required th:errorclass = "bg-danger" type="password" name="confirmedPassword" id="re_pass" class="input-validator" placeholder="Repeat your password"/>
+                                <input required minlength="3" maxlength="10" th:field = "*{confirmedPassword}"  th:errorclass = "bg-danger" type="password" name="confirmedPassword" id="re_pass" class="input-validator" placeholder="Repeat your password"/>
                                 <small th:if="${#fields.hasErrors('confirmedPassword')}" th:errors = "*{confirmedPassword}"></small>
                             </div>
                             <div class="form-group">

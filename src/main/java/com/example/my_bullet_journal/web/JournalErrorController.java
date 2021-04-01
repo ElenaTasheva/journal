@@ -1,5 +1,6 @@
 package com.example.my_bullet_journal.web;
 
+import com.example.my_bullet_journal.web.annotations.PageTitle;
 import org.apache.http.HttpStatus;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 public class JournalErrorController implements ErrorController {
 
     @RequestMapping("/error")
+    @PageTitle("Error Page")
     public String showError(HttpServletRequest request) {
 
         Object status =

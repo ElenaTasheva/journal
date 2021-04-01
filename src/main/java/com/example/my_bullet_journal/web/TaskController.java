@@ -3,6 +3,7 @@ package com.example.my_bullet_journal.web;
 import com.example.my_bullet_journal.models.bindings.TaskBindingModel;
 import com.example.my_bullet_journal.models.services.TaskServiceModel;
 import com.example.my_bullet_journal.services.TaskService;
+import com.example.my_bullet_journal.web.annotations.PageTitle;
 import jdk.jshell.execution.Util;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,7 @@ public class TaskController {
 
 
     @GetMapping("/all")
+    @PageTitle("My Tasks")
     public String showTasks(Model model, @AuthenticationPrincipal UserDetails user) {
         model.addAttribute("tasks", taskService.getAllTasks(user.getUsername()));
         model.addAttribute("noTaskFound", false);
@@ -45,6 +47,7 @@ public class TaskController {
     }
 
     @GetMapping("/add")
+    @PageTitle("Add Task")
     public String showAddTask(Model model) {
         if (!model.containsAttribute("taskBindingModel")) {
             model.addAttribute("taskBindingModel", new TaskBindingModel());

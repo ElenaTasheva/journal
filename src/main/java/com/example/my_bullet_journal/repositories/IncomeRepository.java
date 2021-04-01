@@ -1,5 +1,6 @@
 package com.example.my_bullet_journal.repositories;
 
+import com.example.my_bullet_journal.models.entities.Expense;
 import com.example.my_bullet_journal.models.entities.Income;
 import com.example.my_bullet_journal.models.view.IncomeViewModel;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,8 +32,8 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
     List<Object[]> sumIncomeByCategory(Long id);
 
 
-    @Query(value = "UPDATE Income i SET i.status = 'COMPLETED' " +
-            "WHERE i.addedOn < :date AND i.status = 'ACTIVE'",
-    nativeQuery = true)
-    void changeMonthlyStatus(LocalDate date);
+    @Query(
+            "SELECT i FROM Income i " +
+                    "WHERE i.addedOn < :date AND i.status = 'ACTIVE'")
+    List<Income> changeMonthlyStatus(LocalDate date);
 }

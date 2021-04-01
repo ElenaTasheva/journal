@@ -1,15 +1,16 @@
 package com.example.my_bullet_journal.repositories;
 
 import com.example.my_bullet_journal.models.entities.Expense;
-import com.example.my_bullet_journal.models.enums.ExpenseEnum;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 
+@Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     @Query(
@@ -30,9 +31,12 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
             nativeQuery = true)
    List<Object[]> finExpensesByCategories(Long userId);
 
-    @Query(value = "UPDATE Expense e SET e.status = 'COMPLETED' " +
-            "WHERE e.addedOn < :date AND i.status = 'ACTIVE'",
-            nativeQuery = true)
-    void changeMonthlyStatus(LocalDate date);
+    // at the end of the month changing the status of the expenses
+    @Query(
+            "SELECT e FROM Expense e " +
+            "WHERE e.addedOn < :date AND e.status = 'ACTIVE'")
+     List<Expense> changeStatusToCompleted(LocalDate date);
+
+
 }
 

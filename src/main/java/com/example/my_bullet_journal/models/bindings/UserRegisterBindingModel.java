@@ -33,7 +33,6 @@ public class UserRegisterBindingModel {
         return this;
     }
 
-    //TODO use regex
     @Email
     @NotBlank(message = "Email can not be empty")
     public String getEmail() {

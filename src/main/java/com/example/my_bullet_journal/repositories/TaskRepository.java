@@ -23,4 +23,6 @@ public interface TaskRepository extends JpaRepository<DailyTask, Long> {
 
     @Query("SELECT t from DailyTask t WHERE t.status='INPROGRESS' AND t.dueOn < :date")
     List<DailyTask> findAllTaskThatAreExpired(LocalDate date);
+
+
 }

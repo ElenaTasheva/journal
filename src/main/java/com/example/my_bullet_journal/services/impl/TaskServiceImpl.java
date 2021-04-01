@@ -95,15 +95,22 @@ public class TaskServiceImpl implements TaskService {
     }
 
     // checking what has been expired when starting the app
-
-   // @PostConstruct
     public void changeTaskStatusWhenStartingTheApp() {
-        this.taskRepository.findAllTaskThatAreExpired(LocalDate.now())
-                .forEach(t -> {
-                    t.setStatus(StatusEnum.EXPIRED);
-                    taskRepository.save(t);
-                });
+        changeTaskStatus();
 
+    }
+
+    @Override
+    public void seedTestTask() {
+        if(taskRepository.count() == 0){
+            DailyTask dailyTask = new DailyTask();
+            dailyTask.setCategory(DailyCategoryEnum.WORK)
+                    .setStatus(StatusEnum.INPROGRESS)
+                    .setDueOn(LocalDate.of(2021, 04, 11))
+                    .setName("Passing all tests...")
+                    .setUser(userService.findById((long) 1));
+            this.taskRepository.save(dailyTask);
+        }
     }
 
 

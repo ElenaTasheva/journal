@@ -97,11 +97,8 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User with this email does ot exist"));
     }
 
-    @Override
-    public List<UserViewModel> findAll() {
-        return this.userRepository.findAll()
-                .stream().map(u -> this.modelMapper.map(u, UserViewModel.class)).collect(Collectors.toList());
-    }
+
+
 
     @Override
     public User findById(Long id) {
@@ -117,6 +114,13 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public List<UserViewModel> findAllWithRoleUser() {
+        return this.userRepository.findAllWithOnlyOneRole()
+                .stream().map(u -> this.modelMapper.map(u, UserViewModel.class)).collect(Collectors.toList());
+    }
+    }
 
-}
+
+
 

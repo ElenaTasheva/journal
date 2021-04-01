@@ -14,8 +14,7 @@
 
 <div class="mb-3" style="padding-top: 20px; width: 40%; margin-left: 400px; height: 40%; position: relative" >
     <form th:action="@{/topics/comments/{id}(id=${topic.id})}" method="POST">
-    <textarea name="text" type="text" class="form-control" id="exampleFormControlTextarea1" placeholder="Add Comment...">
-    </textarea>
+    <textarea required minlength="2" name="text"  type="text"  class="form-control" id="exampleFormControlTextarea1" placeholder="Add Comment..."></textarea>
 
             <button class="btn btn-light btn-sm" type="submit"
                     style="margin-left: 250px;margin-top: 5px;">Add</button>

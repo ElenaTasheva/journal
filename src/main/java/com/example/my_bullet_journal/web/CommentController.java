@@ -10,7 +10,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/topics")
@@ -38,8 +42,12 @@ public class CommentController {
 
     @PostMapping("/comments/{id}")
     @PreAuthorize("isAuthenticated()")
-    public String addComment(@PathVariable Long id, CommentBindingModel commentBindingModel,
+    public String addComment(@PathVariable Long id, @Valid CommentBindingModel commentBindingModel,
+                             BindingResult bindingResult,
                              @AuthenticationPrincipal UserDetails user) {
+        if(bindingResult.hasErrors()){
+            return "redirect:" +  id;
+        }
         this.commentService.addCommentToTopic(id, commentBindingModel,user.getUsername());
         return "redirect:" +  id;
     }
