@@ -30,8 +30,8 @@ public class AdminControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"USER"})
-    public void updateUserRole() throws Exception {
+    @WithMockUser(username = "admin")
+    public void showAdminIsForbiddenForUserWithOnlyUSerRole() throws Exception {
         this.mockMvc.perform(get("/admin"))
                 .andExpect(status().isForbidden());
 

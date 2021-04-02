@@ -1,6 +1,7 @@
 package com.example.my_bullet_journal.models.services;
 
 import com.example.my_bullet_journal.models.enums.ExpenseEnum;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

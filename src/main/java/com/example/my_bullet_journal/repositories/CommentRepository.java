@@ -8,9 +8,6 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-//    @Query("SELECT c FROM Comment c WHERE Topic.id = 1")
-//    List<Comment> findAllByTopicId(@Param("topicId") Long topicId);
-
 
     List<Comment> findAllByTopic_Id(Long id);
 

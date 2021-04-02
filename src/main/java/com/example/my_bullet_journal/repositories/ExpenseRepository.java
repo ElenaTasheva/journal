@@ -13,22 +13,18 @@ import java.util.List;
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
-    @Query(
-            value = "SELECT * FROM expenses " +
-                    "WHERE user_id = :userId AND status = 'ACTIVE' " +
-                    "ORDER BY category",
-            nativeQuery = true)
+    @Query("SELECT e FROM Expense e " +
+                    "WHERE e.user.id = :userId AND e.status = 'ACTIVE' " +
+                    "ORDER BY e.category")
     List<Expense> findAllAndOrderByCategory(Long userId);
 
     @Query("SELECT SUM(e.amount) FROM Expense e " +
             "WHERE e.user.id = :userId AND e.status = 'ACTIVE' ")
     BigDecimal getTotal(Long userId);
 
-    @Query(
-            value = "select category, SUM(amount) " +
-                    "FROM expenses WHERE user_id = :userId AND status = 'ACTIVE' " +
-                    "GROUP BY category",
-            nativeQuery = true)
+    @Query("SELECT e.category, SUM(e.amount) " +
+                    "FROM Expense e WHERE e.user.id = :userId AND e.status = 'ACTIVE' " +
+                    "GROUP BY e.category")
    List<Object[]> finExpensesByCategories(Long userId);
 
     // at the end of the month changing the status of the expenses

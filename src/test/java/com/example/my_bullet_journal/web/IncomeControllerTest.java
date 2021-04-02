@@ -33,32 +33,40 @@ public class IncomeControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private IncomeService incomeService;
 
     @Autowired
     private IncomeRepository incomeRepository;
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN", "USER"})
-    public void addIncomeAddsIncomeAndRedirects() throws Exception {
-        this.mockMvc.perform(post("/income/add").with(csrf()))
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN", "USER"})
+    public void addIncomeAddsIncomeToTheRepoAndRedirects() throws Exception {
+        long count = incomeRepository.count();
+        this.mockMvc.perform(post("/income/add")
+                .param("amount", String.valueOf(BigDecimal.valueOf(100)))
+                .param("category", IncomeEnum.SALARY.name())
+                .with(csrf()))
                 .andExpect(status().is3xxRedirection());
-        if (incomeRepository.count() == 0) {
-            incomeService.save((IncomeServiceModel) new IncomeServiceModel().setCategory(IncomeEnum.DEPOSIT)
-                    .setAmount(BigDecimal.valueOf(200)), "admin@gmail.com");
-        }
-        Assert.assertEquals(1, incomeRepository.count());
+        Assert.assertEquals(count+1, incomeRepository.count());
     }
 
     @Test
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN", "USER"})
     public void showsAllIncomeAndTheTotal() throws Exception {
         this.mockMvc.perform(get("/income/add"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("add-income"))
                 .andExpect(model()
                         .attributeExists("categories", "incomeBindingModel"));
+    }
+
+    @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN", "USER"})
+    public void addIncomeDoesNOtAddIncomeToTheRepoWhenTheModelHasErrorsAndRedirects() throws Exception {
+        long count = incomeRepository.count();
+        this.mockMvc.perform(post("/income/add")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+        Assert.assertEquals(count, incomeRepository.count());
     }
 
     }

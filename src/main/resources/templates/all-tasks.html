@@ -19,8 +19,8 @@
             <p class="sticky-notes" th:text="${t.name}">Text Content #1</p>
             <p class="sticky-date" th:text="|due: ${t.dueOn}|">due: 22.05.2012</p>
             <span>
-            <form th:action= "@{/tasks/delete/{taskId}(taskId=${t.id})}"
-                  th:method="DELETE" class="sticky-form-button">
+            <form th:action= "@{/tasks/mark_done/{taskId}(taskId=${t.id})}"
+                  th:method="POST" class="sticky-form-button">
             <input  class="btn btn-primary-sm btn btn-outline-light" type="submit" value="Done"></input>
                 </form>
                 <form th:action= "@{/tasks/edit/{taskId}(taskId=${t.id})}"

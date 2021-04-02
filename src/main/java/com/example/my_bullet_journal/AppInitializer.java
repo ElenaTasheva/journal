@@ -41,8 +41,6 @@ public class AppInitializer implements CommandLineRunner {
         taskService.changeTaskStatusWhenStartingTheApp();
 
 
-        //todo change the text in the paragrphs for mistakes (add-expenses, add-income)
-
     
     }
 }

@@ -75,7 +75,7 @@ public class TaskController {
     }
 
 
-    @DeleteMapping("/delete/{taskId}")
+    @PostMapping("/mark_done/{taskId}")
     public String changeTaskStatusToCompleted(@PathVariable long taskId) {
         taskService.changeStatusToCompleted(taskId);
         return "redirect:/tasks/all";

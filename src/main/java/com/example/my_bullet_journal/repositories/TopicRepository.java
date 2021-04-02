@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface TopicRepository extends JpaRepository<Topic, Long> {
 
-    @Query("SELECT t.title FROM Topic t WHERE t.id = :id")
-    String findTopicNameById(Long id);
+
+
 
     Optional<Topic> findByTitle(String title);
 }

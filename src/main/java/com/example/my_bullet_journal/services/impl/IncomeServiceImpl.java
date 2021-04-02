@@ -69,7 +69,7 @@ public class IncomeServiceImpl implements IncomeService {
         HashMap<String, BigDecimal> result = new HashMap<>();
             List<Object[]> list = this.incomeRepository.sumIncomeByCategory(userId);
             for (Object[] ob: list) {
-                String key = (String)ob[0];
+                String key = ((IncomeEnum)ob[0]).name();
                 BigDecimal value = (BigDecimal) ob[1];
                 result.put(key, value);
 

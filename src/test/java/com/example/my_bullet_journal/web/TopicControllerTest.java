@@ -1,14 +1,10 @@
 package com.example.my_bullet_journal.web;
 
-
-import com.example.my_bullet_journal.models.bindings.TopicBindingModel;
-import com.example.my_bullet_journal.models.entities.User;
 import com.example.my_bullet_journal.repositories.TopicRepository;
 import com.example.my_bullet_journal.services.TopicService;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,16 +33,16 @@ public class TopicControllerTest {
     @Autowired
     private TopicRepository topicRepository;
 
-    private ModelMapper modelMapper = new ModelMapper();
+
 
     @BeforeEach
-    public void init() throws IOException {
+    public void init()  {
         this.topicService.seedTopics();
     }
 
 
     @Test
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN", "USER"})
     public void showTopicsShowTopicsIfThereAreAnyInDB() throws Exception {
         this.mockMvc.perform(get("/topics/all"))
                 .andExpect(status().isOk())
@@ -57,10 +53,17 @@ public class TopicControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "admin", roles = {"ADMIN", "USER"})
-    public void addTopic () throws Exception {
-        this.mockMvc.perform(post("/topics/add").with(csrf()))
-                .andExpect(status().is3xxRedirection());
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN", "USER"})
+    public void addTopicRedirectsAndDoesNOtAddTopicToTheRepoWhenThereAreMistakesInBinding () throws Exception {
+        long count = topicRepository.count();
+        this.mockMvc.perform(post("/topics/add")
+                .param("title", "TEST")
+                .param("img", "img.url")
+                .with(csrf()))
+                .andExpect(flash().attributeExists("topicBindingModel"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin"));
+        Assert.assertEquals(count, topicRepository.count());
 
     }
     }

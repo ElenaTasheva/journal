@@ -4,6 +4,7 @@ package com.example.my_bullet_journal.web;
 import com.example.my_bullet_journal.models.bindings.CommentBindingModel;
 import com.example.my_bullet_journal.models.entities.Comment;
 import com.example.my_bullet_journal.repositories.CommentRepository;
+import com.example.my_bullet_journal.repositories.TopicRepository;
 import com.example.my_bullet_journal.services.CommentService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -35,18 +36,20 @@ public class CommentControllerTest {
     private CommentRepository commentRepository;
 
 
+
     @Test
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "admin@gmail.com")
     public void addCommentAddsCommentToATopicAndRedirect() throws Exception {
-        long count = commentRepository.count();
-        this.mockMvc.perform(post("/topics/comments/{id}", 1).with(csrf()))
+        long totalComments = commentRepository.count();
+        this.mockMvc.perform(post("/topics/comments/{id}", 1)
+                .param("text", "testing comment")
+                .with(csrf()))
                 .andExpect(status().is3xxRedirection());
-        commentService.addCommentToTopic((long) 1, new CommentBindingModel().setText("test"),"admin@gmail.com");
-        Assert.assertEquals(count + 1, commentRepository.count());
+        Assert.assertEquals(totalComments + 1, commentRepository.count());
     }
 
     @Test
-    @WithMockUser(username = "user", roles = {"USER"})
+    @WithMockUser(username = "user")
     public void deleteCommentDeletesCommentAndRedirects() throws Exception {
         long count = commentRepository.count();
         if(count == 0){
@@ -54,9 +57,11 @@ public class CommentControllerTest {
         }
         List<Comment> commentList = commentRepository.findAll();
         long id = commentList.get(0).getId();
-        this.mockMvc.perform(delete("/topics//comments/{topicId}/delete/{commentId}", 1, id).with(csrf()))
+        long topicId = commentList.get(0).getTopic().getId();
+        this.mockMvc.perform(delete("/topics/comments/{topicId}/delete/{commentId}", topicId, id).with(csrf()))
                 .andExpect(status().is3xxRedirection());
         Assert.assertEquals(count - 1, commentRepository.count());
+
     }
 
 

@@ -45,7 +45,7 @@ public class ExpenseServiceTest {
         Mockito.when(mockedUserService.findByEmail("test@mail.bg"))
                 .thenReturn((User) new User().setId((long) 1));
         List<Expense> expenseList = new ArrayList<>();
-        expenseList.add((Expense) new Expense().setCategory(ExpenseEnum.BILLS).setAmount(BigDecimal.valueOf(20)));;
+        expenseList.add((Expense) new Expense().setCategory(ExpenseEnum.BILLS).setAmount(BigDecimal.valueOf(20)));
         expenseList.add((Expense) new Expense().setCategory(ExpenseEnum.BILLS).setAmount(BigDecimal.valueOf(10)));
         Mockito.when(mockedExpenseRepository.findAllAndOrderByCategory((long) 1)).thenReturn(expenseList);
         ExpenseService expenseService = new ExpenseServiceImpl(mockedExpenseRepository,modelMapper, mockedUserService);
@@ -79,15 +79,15 @@ public class ExpenseServiceTest {
     public void expenseSumByCategoryReturnsAMapWithTheCategoriesAndTheirsSum() {
         List<Object[]> result = new ArrayList<>();
         Object [] obj = new Object[2];
-        obj[0] = "Rent";
+        obj[0] = ExpenseEnum.RENT;
         obj[1] = BigDecimal.valueOf(100);
         result.add(obj);
         Mockito.when(mockedExpenseRepository.finExpensesByCategories((long) 1))
                 .thenReturn(result);
         ExpenseService expenseService = new ExpenseServiceImpl(mockedExpenseRepository,modelMapper, mockedUserService);
         HashMap<String,BigDecimal> expenseSum = expenseService.expenseSumByCategory((long) 1);
-        Assert.assertTrue(expenseSum.containsKey("Rent"));
-        Assert.assertEquals(BigDecimal.valueOf(100), expenseSum.get("Rent"));
+        Assert.assertTrue(expenseSum.containsKey("RENT"));
+        Assert.assertEquals(BigDecimal.valueOf(100), expenseSum.get("RENT"));
 
     }
 

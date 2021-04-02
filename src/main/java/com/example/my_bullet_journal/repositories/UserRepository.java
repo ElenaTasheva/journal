@@ -1,8 +1,6 @@
 package com.example.my_bullet_journal.repositories;
 
 import com.example.my_bullet_journal.models.entities.User;
-import com.example.my_bullet_journal.models.enums.RoleEnum;
-import com.example.my_bullet_journal.models.services.UserRegisterServiceModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

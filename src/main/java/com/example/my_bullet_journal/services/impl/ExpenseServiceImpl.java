@@ -72,7 +72,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         HashMap<String, BigDecimal> result = new HashMap<>();
         List<Object[]> list = this.expenseRepository.finExpensesByCategories(userId);
         for (Object[] ob : list) {
-            String key = (String) ob[0];
+            String key = ((ExpenseEnum) ob[0]).name();
             BigDecimal value = (BigDecimal) ob[1];
             result.put(key, value);
 

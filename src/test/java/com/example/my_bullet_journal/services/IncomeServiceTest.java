@@ -43,7 +43,7 @@ public class IncomeServiceTest {
         Mockito.when(mockedUserService.findByEmail("test@mail.bg"))
                 .thenReturn((User) new User().setId((long) 1));
         List<Income> incomeList = new ArrayList<>();
-        incomeList.add((Income) new Income().setCategory(IncomeEnum.DEPOSIT).setAmount(BigDecimal.valueOf(20)));;
+        incomeList.add((Income) new Income().setCategory(IncomeEnum.DEPOSIT).setAmount(BigDecimal.valueOf(20)));
         incomeList.add((Income) new Income().setCategory(IncomeEnum.INVESTMENT).setAmount(BigDecimal.valueOf(10)));
         Mockito.when(mockedIncomeRepository.findAllAndOrderByCategory((long) 1)).thenReturn(incomeList);
         IncomeService incomeService = new IncomeServiceImpl(mockedIncomeRepository,modelMapper, mockedUserService);
@@ -77,15 +77,15 @@ public class IncomeServiceTest {
     public void incomeSumByCategoryReturnsAMapWithTheCategoriesAndTheirsSum() {
         List<Object[]> result = new ArrayList<>();
         Object [] obj = new Object[2];
-        obj[0] = "Rent";
+        obj[0] = IncomeEnum.DEPOSIT;
         obj[1] = BigDecimal.valueOf(100);
         result.add(obj);
         Mockito.when(mockedIncomeRepository.sumIncomeByCategory((long) 1))
                 .thenReturn(result);
         IncomeService incomeService = new IncomeServiceImpl(mockedIncomeRepository,modelMapper, mockedUserService);
         HashMap<String,BigDecimal> incomeSum = incomeService.incomeSumByCategory((long) 1);
-        Assert.assertTrue(incomeSum.containsKey("Rent"));
-        Assert.assertEquals(BigDecimal.valueOf(100), incomeSum.get("Rent"));
+        Assert.assertTrue(incomeSum.containsKey("DEPOSIT"));
+        Assert.assertEquals(BigDecimal.valueOf(100), incomeSum.get("DEPOSIT"));
 
     }
 
