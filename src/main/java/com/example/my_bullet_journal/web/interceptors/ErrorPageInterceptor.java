@@ -25,7 +25,7 @@ public class ErrorPageInterceptor implements HandlerInterceptor {
                 = new ContentCachingRequestWrapper(request);
         requestCacheWrapperObject.getParameterMap();
         // Read inputStream from requestCacheWrapperObject and log it
-        //todo read why using the cache wrapper
+        
         logger.error("Error!!! {}", requestCacheWrapperObject.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
         return true;
     }

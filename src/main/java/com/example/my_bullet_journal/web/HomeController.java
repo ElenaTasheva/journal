@@ -19,7 +19,6 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    @PreAuthorize("isAnonymous()")
     @PageTitle("Home")
     public String showIndex(Model model){
         if(!model.containsAttribute("quoteViewModel")){

@@ -3,7 +3,6 @@ package com.example.my_bullet_journal.services.impl;
 
 import com.example.my_bullet_journal.models.entities.Expense;
 import com.example.my_bullet_journal.models.entities.User;
-import com.example.my_bullet_journal.models.enums.BudgetStatusEnum;
 import com.example.my_bullet_journal.models.enums.ExpenseEnum;
 import com.example.my_bullet_journal.models.services.ExpenseServiceModel;
 import com.example.my_bullet_journal.models.view.ExpenseViewModel;
@@ -89,11 +88,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Scheduled(cron = "0 0 0 1 * *")
     protected void changeExpenseStatusToCompleted() {
-        expenseRepository.changeStatusToCompleted(LocalDate.now())
-        .forEach(expense -> {
-            expense.setStatus(BudgetStatusEnum.COMPLETED);
-            expenseRepository.save(expense);
-        });
+        expenseRepository.changeStatusToCompleted(LocalDate.now());
 
     }
 }

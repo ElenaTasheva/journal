@@ -91,13 +91,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                  .logoutUrl("/logout").
                         logoutSuccessUrl("/").
                         invalidateHttpSession(true).
-                        deleteCookies("JSESSIONID");
-//                 .and()
-//                 .rememberMe()
-//                 .rememberMeParameter("remember-me")
-//                 .key("remember-me Me Encryption Key")
-//                 .rememberMeCookieName("rememberMeCookieName")
-//                 .tokenValiditySeconds(10000);
+                        deleteCookies("JSESSIONID")
+                 .and()
+                 .rememberMe()
+                 .rememberMeParameter("remember-me")
+                 .key("remember-me Me Encryption Key")
+                 .rememberMeCookieName("rememberMeCookieName")
+                 .tokenValiditySeconds(10000);
 
         // http.csrf().disable();
 

@@ -2,6 +2,7 @@ package com.example.my_bullet_journal.repositories;
 
 import com.example.my_bullet_journal.models.entities.Income;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.math.BigDecimal;
@@ -27,8 +28,10 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
     List<Object[]> sumIncomeByCategory(Long id);
 
 
-    @Query(
-            "SELECT i FROM Income i " +
+    @Modifying
+            @Query(
+            "UPDATE Income i " +
+                    "SET i.status = 'COMPLETED' " +
                     "WHERE i.addedOn < :date AND i.status = 'ACTIVE'")
-    List<Income> changeMonthlyStatus(LocalDate date);
+   void changeMonthlyStatus(LocalDate date);
 }

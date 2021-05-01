@@ -3,6 +3,7 @@ package com.example.my_bullet_journal.repositories;
 import com.example.my_bullet_journal.models.entities.Expense;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -28,10 +29,12 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
    List<Object[]> finExpensesByCategories(Long userId);
 
     // at the end of the month changing the status of the expenses
+    @Modifying
     @Query(
-            "SELECT e FROM Expense e " +
+            "UPDATE Expense e " +
+                    "SET e.status = 'COMPLETED' " +
             "WHERE e.addedOn < :date AND e.status = 'ACTIVE'")
-     List<Expense> changeStatusToCompleted(LocalDate date);
+     void changeStatusToCompleted(LocalDate date);
 
 
 }

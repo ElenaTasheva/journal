@@ -81,11 +81,7 @@ public class IncomeServiceImpl implements IncomeService {
         // completing the month and starting next month from 0
         @Scheduled(cron = "0 0 0 1 * *")
         protected void changeIncomeStatusToCompleted() {
-            incomeRepository.changeMonthlyStatus(LocalDate.now())
-                    .forEach(income -> {
-                        income.setStatus(BudgetStatusEnum.COMPLETED);
-                        incomeRepository.save(income);
-                    });
+            incomeRepository.changeMonthlyStatus(LocalDate.now());
 
         }
 
